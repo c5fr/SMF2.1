@@ -21,13 +21,13 @@ if (!defined('SMF'))
  * to the $smcFunc['db_function_name'] variable.
  * @see Subs-Db-mysql.php#smf_db_initiate
  *
- * @param string $db_server The database server
- * @param string $db_name The name of the database
- * @param string $db_user The database username
- * @param string $db_passwd The database password
- * @param string $db_prefix The table prefix
- * @param array $db_options An array of database options
- * @return null|resource Returns null on failure if $db_options['non_fatal'] is true or a PostgreSQL connection resource handle if the connection was successful.
+ * @param type $db_server
+ * @param type $db_name
+ * @param type $db_user
+ * @param type $db_passwd
+ * @param type $db_prefix
+ * @param type $db_options
+ * @return null
  */
 function smf_db_initiate($db_server, $db_name, $db_user, $db_passwd, &$db_prefix, $db_options = array())
 {
@@ -84,7 +84,7 @@ function smf_db_initiate($db_server, $db_name, $db_user, $db_passwd, &$db_prefix
  * Extend the database functionality. It calls the respective file's init
  * to add the implementations in that file to $smcFunc array.
  *
- * @param string $type Indicates which additional file to load. ('extra', 'packages')
+ * @param string $type = 'extra'
  */
 function db_extend ($type = 'extra')
 {
@@ -97,10 +97,11 @@ function db_extend ($type = 'extra')
 
 /**
  * Fix the database prefix if necessary.
- * Does nothing on PostgreSQL
+ * Do nothing on postgreSQL
  *
- * @param string $db_prefix The database prefix
- * @param string $db_name The database name
+ * @param type $db_prefix
+ * @param type $db_name
+ * @return type
  */
 function db_fix_prefix (&$db_prefix, $db_name)
 {
@@ -109,12 +110,13 @@ function db_fix_prefix (&$db_prefix, $db_name)
 
 /**
  * Callback for preg_replace_callback on the query.
- * It allows to replace on the fly a few pre-defined strings, for convenience ('query_see_board', 'query_wanna_see_board'), with
+ * It allows to replace on the fly a few pre-defined strings, for
+ * convenience ('query_see_board', 'query_wanna_see_board'), with
  * their current values from $user_info.
- * In addition, it performs checks and sanitization on the values sent to the database.
+ * In addition, it performs checks and sanitization on the values
+ * sent to the database.
  *
- * @param array $matches The matches from preg_replace_callback
- * @return string The appropriate string depending on $matches[1]
+ * @param $matches
  */
 function smf_db_replacement__callback($matches)
 {
@@ -222,12 +224,13 @@ function smf_db_replacement__callback($matches)
 }
 
 /**
- * Just like the db_query, escape and quote a string, but not executing the query.
+ * Just like the db_query, escape and quote a string,
+ * but not executing the query.
  *
- * @param string $db_string The database string
- * @param array $db_values An array of values to be injected into the string
- * @param resource $connection = null The connection to use (null to use $db_connection)
- * @return string The string with the values inserted
+ * @param string $db_string
+ * @param string $db_values
+ * @param type $connection
+ * @return type
  */
 function smf_db_quote($db_string, $db_values, $connection = null)
 {
@@ -254,11 +257,11 @@ function smf_db_quote($db_string, $db_values, $connection = null)
  * Special queries may need additional replacements to be appropriate
  * for PostgreSQL.
  *
- * @param string $identifier An identifier. Only used in Postgres when we need to do things differently...
- * @param string $db_string The database string
- * @param array $db_values = array() The values to be inserted into the string
- * @param resource $connection = null The connection to use (null to use $db_connection)
- * @return resource|bool Returns a MySQL result resource (for SELECT queries), true (for UPDATE queries) or false if the query failed
+ * @param string $identifier
+ * @param string $db_string
+ * @param string $db_values
+ * @param type $connection
+ * @return boolean
  */
 function smf_db_query($identifier, $db_string, $db_values = array(), $connection = null)
 {
@@ -468,12 +471,11 @@ function smf_db_affected_rows($result = null)
 }
 
 /**
- * Gets the ID of the most recently inserted row.
+ * insert_id
  *
- * @param string $table The table (only used for Postgres)
- * @param string $field = null The specific field (not used here)
- * @param resource $connection = null The connection (if null, $db_connection is used)
- * @return int The ID of the most recently inserted row
+ * @param string $table
+ * @param string $field = null
+ * @param resource $connection = null
  */
 function smf_db_insert_id($table, $field = null, $connection = null)
 {
@@ -500,9 +502,8 @@ function smf_db_insert_id($table, $field = null, $connection = null)
 /**
  * Do a transaction.
  *
- * @param string $type The step to perform (i.e. 'begin', 'commit', 'rollback')
- * @param resource $connection The connection to use (if null, $db_connection is used)
- * @return bool True if successful, false otherwise
+ * @param string $type - the step to perform (i.e. 'begin', 'commit', 'rollback')
+ * @param resource $connection = null
  */
 function smf_db_transaction($type = 'commit', $connection = null)
 {
@@ -525,8 +526,8 @@ function smf_db_transaction($type = 'commit', $connection = null)
  * Database error!
  * Backtrace, log, try to fix.
  *
- * @param string $db_string The DB string
- * @param resource $connection The connection to use (if null, $db_connection is used)
+ * @param string $db_string
+ * @param resource $connection = null
  */
 function smf_db_error($db_string, $connection = null)
 {
@@ -570,9 +571,8 @@ function smf_db_error($db_string, $connection = null)
 /**
  * A PostgreSQL specific function for tracking the current row...
  *
- * @param resource $request A PostgreSQL result resource
- * @param int $counter The row number in the result to fetch (false to fetch the next one)
- * @return array The contents of the row that was fetched
+ * @param $request
+ * @param $counter
  */
 function smf_db_fetch_row($request, $counter = false)
 {
@@ -592,9 +592,8 @@ function smf_db_fetch_row($request, $counter = false)
 /**
  * Get an associative array
  *
- * @param resource $request A PostgreSQL result resource
- * @param int $counter The row to get. If false, returns the next row.
- * @return array An associative array of row contents
+ * @param $request
+ * @param $counter
  */
 function smf_db_fetch_assoc($request, $counter = false)
 {
@@ -614,9 +613,8 @@ function smf_db_fetch_assoc($request, $counter = false)
 /**
  * Reset the pointer...
  *
- * @param resource $request A PostgreSQL result resource
- * @param int $counter The counter
- * @return bool Always returns true
+ * @param $request
+ * @param $counter
  */
 function smf_db_data_seek($request, $counter)
 {
@@ -630,8 +628,7 @@ function smf_db_data_seek($request, $counter)
 /**
  * Unescape an escaped string!
  *
- * @param string $string The string to unescape
- * @return string The unescaped string
+ * @param $string
  */
 function smf_db_unescape_string($string)
 {
@@ -639,15 +636,15 @@ function smf_db_unescape_string($string)
 }
 
 /**
- * Inserts data into a table
+ * insert
  *
- * @param string $method The insert method - can be 'replace', 'ignore' or 'insert'
- * @param string $table The table we're inserting the data into
- * @param array $columns An array of the columns we're inserting the data into. Should contain 'column' => 'datatype' pairs
- * @param array $data The data to insert
- * @param array $keys The keys for the table
- * @param bool $disable_trans Whether to disable transactions
- * @param resource $connection The connection to use (if null, $db_connection is used)
+ * @param string $method - options 'replace', 'ignore', 'insert'
+ * @param $table
+ * @param $columns
+ * @param $data
+ * @param $keys
+ * @param bool $disable_trans = false
+ * @param resource $connection = null
  */
 function smf_db_insert($method = 'replace', $table, $columns, $data, $keys, $disable_trans = false, $connection = null)
 {
@@ -747,9 +744,8 @@ function smf_db_insert($method = 'replace', $table, $columns, $data, $keys, $dis
 /**
  * Dummy function really. Doesn't do anything on PostgreSQL.
  *
- * @param string $db_name The database name
- * @param resource $db_connection The database connection
- * @return true Always returns true
+ * @param unknown_type $db_name
+ * @param unknown_type $db_connection
  */
 function smf_db_select_db($db_name, $db_connection)
 {
@@ -758,7 +754,6 @@ function smf_db_select_db($db_name, $db_connection)
 
 /**
  * Get the current version.
- * @return string The client version
  */
 function smf_db_version()
 {
@@ -770,12 +765,11 @@ function smf_db_version()
 /**
  * This function tries to work out additional error information from a back trace.
  *
- * @param string $error_message The error message
- * @param string $log_message The message to log
- * @param string|bool $error_type What type of error this is
- * @param string $file The file the error occurred in
- * @param int $line What line of $file the code which generated the error is on
- * @return void|array Returns an array with the file and line if $error_type is 'return'
+ * @param $error_message
+ * @param $log_message
+ * @param $error_type
+ * @param $file
+ * @param $line
  */
 function smf_db_error_backtrace($error_message, $log_message = '', $error_type = false, $file = null, $line = null)
 {
@@ -822,9 +816,8 @@ function smf_db_error_backtrace($error_message, $log_message = '', $error_type =
 /**
  * Escape the LIKE wildcards so that they match the character and not the wildcard.
  *
- * @param string $string The string to escape
- * @param bool $translate_human_wildcards If true, turns human readable wildcards into SQL wildcards.
- * @return string The escaped string
+ * @param $string
+ * @param bool $translate_human_wildcards = false, if true, turns human readable wildcards into SQL wildcards.
  */
 function smf_db_escape_wildcard_string($string, $translate_human_wildcards=false)
 {

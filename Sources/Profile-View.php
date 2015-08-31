@@ -16,7 +16,7 @@ if (!defined('SMF'))
 
 /**
  * View a summary.
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function summary($memID)
 {
@@ -204,11 +204,9 @@ function summary($memID)
 /**
  * Fetch the alerts a user currently has.
  *
- * @param int $memID The ID of the member
- * @param bool $all Whether to fetch all alerts or just unread ones
- * @param int $counter How many alerts to display (0 if displaying all or using pagination)
- * @param array $pagination An array containing info for handling pagination. Should have 'start' and 'maxIndex'
- * @return array An array of information about the fetched alerts
+ * @param int $memID id_member
+ * @param bool $all Fetch all, or only fetch unread.
+ * @param int $counter
  */
 function fetch_alerts($memID, $all = false, $counter = 0, $pagination = array())
 {
@@ -359,7 +357,8 @@ function fetch_alerts($memID, $all = false, $counter = 0, $pagination = array())
 /**
  * Shows all alerts for this user
  *
- * @param int $memID The ID of the member
+ * @param int $memID The current User profile.
+ * @return void
  */
 function showAlerts($memID)
 {
@@ -442,7 +441,7 @@ function showAlerts($memID)
  * Show all posts by the current user
  * @todo This function needs to be split up properly.
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function showPosts($memID)
 {
@@ -586,9 +585,9 @@ function showPosts($memID)
 	$range_limit = '';
 
 	if ($context['is_topics'])
-		$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['topics_per_page']) ? $options['topics_per_page'] : $modSettings['defaultMaxTopics'];
+		$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['topics_per_page']) && !WIRELESS ? $options['topics_per_page'] : $modSettings['defaultMaxTopics'];
 	else
-		$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['messages_per_page']) ? $options['messages_per_page'] : $modSettings['defaultMaxMessages'];
+		$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['messages_per_page']) && !WIRELESS ? $options['messages_per_page'] : $modSettings['defaultMaxMessages'];
 
 	$maxIndex = $maxPerPage;
 
@@ -792,7 +791,7 @@ function showPosts($memID)
 /**
  * Show all the attachments of a user.
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function showAttachments($memID)
 {
@@ -915,14 +914,14 @@ function showAttachments($memID)
 }
 
 /**
- * Get a list of attachments for this user. Callback for the list in showAttachments()
+ * Get a list of attachments for this user
  *
- * @param int $start Which item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param array $boardsAllowed An array containing the IDs of the boards they can see
- * @param int $memID The ID of the member
- * @return array An array of information about the attachments
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param array $boardsAllowed
+ * @param ing $memID
+ * @return array
  */
 function list_getAttachments($start, $items_per_page, $sort, $boardsAllowed, $memID)
 {
@@ -978,9 +977,9 @@ function list_getAttachments($start, $items_per_page, $sort, $boardsAllowed, $me
 /**
  * Gets the total number of attachments for the user
  *
- * @param array $boardsAllowed An array of the IDs of the boards they can see
- * @param int $memID The ID of the member
- * @return int The number of attachments
+ * @param type $boardsAllowed
+ * @param type $memID
+ * @return type
  */
 function list_getNumAttachments($boardsAllowed, $memID)
 {
@@ -1016,7 +1015,7 @@ function list_getNumAttachments($boardsAllowed, $memID)
 /**
  * Show all the unwatched topics.
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function showUnwatched($memID)
 {
@@ -1032,7 +1031,7 @@ function showUnwatched($memID)
 	$listOptions = array(
 		'id' => 'unwatched_topics',
 		'width' => '100%',
-		'items_per_page' => (empty($modSettings['disableCustomPerPage']) && !empty($options['topics_per_page'])) ? $options['topics_per_page'] : $modSettings['defaultMaxTopics'],
+		'items_per_page' => (empty($modSettings['disableCustomPerPage']) && !empty($options['topics_per_page']) && !WIRELESS) ? $options['topics_per_page'] : $modSettings['defaultMaxTopics'],
 		'no_items_label' => $txt['unwatched_topics_none'],
 		'base_href' => $scripturl . '?action=profile;area=showposts;sa=unwatchedtopics;u=' . $memID,
 		'default_sort_col' => 'started_on',
@@ -1136,13 +1135,7 @@ function showUnwatched($memID)
 }
 
 /**
- * Gets information about unwatched (disregarded) topics. Callback for the list in show_unwatched
- *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param int $memID The ID of the member
- * @return array An array of information about the unwatched topics
+ * Get the relevant topics in the unwatched list
  */
 function list_getUnwatched($start, $items_per_page, $sort, $memID)
 {
@@ -1202,8 +1195,7 @@ function list_getUnwatched($start, $items_per_page, $sort, $memID)
 /**
  * Count the number of topics in the unwatched list
  *
- * @param int $memID The ID of the member
- * @return int The number of unwatched topics
+ * @param int $memID
  */
 function list_getNumUnwatched($memID)
 {
@@ -1231,7 +1223,7 @@ function list_getNumUnwatched($memID)
 /**
  * Gets the user stats for display
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function statPanel($memID)
 {
@@ -1426,9 +1418,9 @@ function statPanel($memID)
 }
 
 /**
- * Loads up the information for the "track user" section of the profile
+ * @todo needs a description
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function tracking($memID)
 {
@@ -1489,9 +1481,9 @@ function tracking($memID)
 }
 
 /**
- * Handles tracking a user's activity
+ * @todo needs a description
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function trackActivity($memID)
 {
@@ -1712,9 +1704,9 @@ function trackActivity($memID)
 /**
  * Get the number of user errors
  *
- * @param string $where A query to limit which errors are counted
- * @param array $where_vars The parameters for $where
- * @return int Number of user errors
+ * @param string $where
+ * @param array $where_vars = array()
+ * @return string number of user errors
  */
 function list_getUserErrorCount($where, $where_vars = array())
 {
@@ -1729,18 +1721,19 @@ function list_getUserErrorCount($where, $where_vars = array())
 	list ($count) = $smcFunc['db_fetch_row']($request);
 	$smcFunc['db_free_result']($request);
 
-	return (int) $count;
+	// @todo cast this to an integer
+	return $count;
 }
 
 /**
- * Gets all of the errors generated by a user's actions. Callback for the list in track_activity
+ * @todo needs a description
  *
- * @param int $start Which item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param string $where A query indicating how to filter the results (eg 'id_member={int:id_member}')
- * @param array $where_vars An array of parameters for $where
- * @return array An array of information about the error messages
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param string $where
+ * @param array $where_vars
+ * @return array error messages
  */
 function list_getUserErrors($start, $items_per_page, $sort, $where, $where_vars = array())
 {
@@ -1776,11 +1769,11 @@ function list_getUserErrors($start, $items_per_page, $sort, $where, $where_vars 
 }
 
 /**
- * Gets the number of posts made from a particular IP
+ * @todo needs a description
  *
- * @param string $where A query indicating which posts to count
- * @param array $where_vars The parameters for $where
- * @return int Count of messages matching the IP
+ * @param string $where
+ * @param array $where_vars
+ * @return string count of messages matching the IP
  */
 function list_getIPMessageCount($where, $where_vars = array())
 {
@@ -1796,18 +1789,19 @@ function list_getIPMessageCount($where, $where_vars = array())
 	list ($count) = $smcFunc['db_fetch_row']($request);
 	$smcFunc['db_free_result']($request);
 
-	return (int) $count;
+	// @todo cast to integer
+	return $count;
 }
 
 /**
- * Gets all the posts made from a particular IP
+ * @todo needs a description
  *
- * @param int $start Which item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param string $where A query to filter which posts are returned
- * @param array $where_vars An array of parameters for $where
- * @return array An array containing information about the posts
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param string $where
+ * @param array $where_vars
+ * @return array an array of messages
  */
 function list_getIPMessages($start, $items_per_page, $sort, $where, $where_vars = array())
 {
@@ -1849,9 +1843,9 @@ function list_getIPMessages($start, $items_per_page, $sort, $where, $where_vars 
 }
 
 /**
- * Handles tracking a particular IP address
+ * @todo needs a description
  *
- * @param int $memID The ID of a member whose IP we want to track
+ * @param int $memID = 0 id_member
  */
 function TrackIP($memID = 0)
 {
@@ -1905,7 +1899,7 @@ function TrackIP($memID = 0)
 	ksort($context['ips']);
 
 	// For messages we use the "messages per page" option
-	$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['messages_per_page']) ? $options['messages_per_page'] : $modSettings['defaultMaxMessages'];
+	$maxPerPage = empty($modSettings['disableCustomPerPage']) && !empty($options['messages_per_page']) && !WIRELESS ? $options['messages_per_page'] : $modSettings['defaultMaxMessages'];
 
 	// Gonna want this for the list.
 	require_once($sourcedir . '/Subs-List.php');
@@ -2135,9 +2129,9 @@ function TrackIP($memID = 0)
 }
 
 /**
- * Tracks a user's logins.
+ * Tracks a users logins.
  *
- * @param int $memID The ID of the member
+ * @param int $memID = 0 id_member
  */
 function TrackLogins($memID = 0)
 {
@@ -2213,11 +2207,11 @@ function TrackLogins($memID = 0)
 }
 
 /**
- * Finds the total number of tracked logins for a particular user
+ * Callback for trackLogins for counting history.
  *
- * @param string $where A query to limit which logins are counted
- * @param array $where_vars An array of parameters for $where
- * @return int count of messages matching the IP
+ * @param string $where
+ * @param array $where_vars
+ * @return string count of messages matching the IP
  */
 function list_getLoginCount($where, $where_vars = array())
 {
@@ -2234,18 +2228,19 @@ function list_getLoginCount($where, $where_vars = array())
 	list ($count) = $smcFunc['db_fetch_row']($request);
 	$smcFunc['db_free_result']($request);
 
-	return (int) $count;
+	// @todo cast to integer
+	return $count;
 }
 
 /**
- * Callback for the list in trackLogins.
+ * Callback for trackLogins data.
  *
- * @param int $start Which item to start with (not used here)
- * @param int $items_per_page How many items to show on each page (not used here)
- * @param string $sort A string indicating
- * @param string $where A query to filter results (not used here)
- * @param array $where_vars An array of parameters for $where. Only 'current_member' (the ID of the member) is used here
- * @return array An array of information about user logins
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param string $where
+ * @param array $where_vars
+ * @return array an array of messages
  */
 function list_getLogins($start, $items_per_page, $sort, $where, $where_vars = array())
 {
@@ -2273,9 +2268,9 @@ function list_getLogins($start, $items_per_page, $sort, $where, $where_vars = ar
 }
 
 /**
- * Tracks a user's profile edits
+ * @todo needs a description
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function trackEdits($memID)
 {
@@ -2376,8 +2371,8 @@ function trackEdits($memID)
 /**
  * How many edits?
  *
- * @param int $memID The ID of the member
- * @return int The number of profile edits
+ * @param int $memID id_member
+ * @return string number of profile edits
  */
 function list_getProfileEditCount($memID)
 {
@@ -2396,17 +2391,18 @@ function list_getProfileEditCount($memID)
 	list ($edit_count) = $smcFunc['db_fetch_row']($request);
 	$smcFunc['db_free_result']($request);
 
-	return (int) $edit_count;
+	// @todo cast to integer
+	return $edit_count;
 }
 
 /**
- * Loads up information about a user's profile edits. Callback for the list in trackEdits()
+ * @todo needs a description
  *
- * @param int $start Which item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param int $memID The ID of the member
- * @return array An array of information about the profile edits
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param int $memID
+ * @return array
  */
 function list_getProfileEdits($start, $items_per_page, $sort, $memID)
 {
@@ -2490,7 +2486,7 @@ function list_getProfileEdits($start, $items_per_page, $sort, $memID)
 /**
  * Display the history of group requests made by the user whose profile we are viewing.
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function trackGroupReq($memID)
 {
@@ -2569,8 +2565,8 @@ function trackGroupReq($memID)
 /**
  * How many edits?
  *
- * @param int $memID The ID of the member
- * @return int The number of profile edits
+ * @param int $memID id_member
+ * @return string number of profile edits
  */
 function list_getGroupRequestsCount($memID)
 {
@@ -2592,13 +2588,13 @@ function list_getGroupRequestsCount($memID)
 }
 
 /**
- * Loads up information about a user's group requests. Callback for the list in trackGroupReq()
+ * @todo needs a description
  *
- * @param int $start Which item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show on each page
- * @param string $sort A string indicating how to sort the results
- * @param int $memID The ID of the member
- * @return array An array of information about the user's group requests
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @param int $memID
+ * @return array
  */
 function list_getGroupRequests($start, $items_per_page, $sort, $memID)
 {
@@ -2651,9 +2647,9 @@ function list_getGroupRequests($start, $items_per_page, $sort, $memID)
 }
 
 /**
- * Shows which permissions a user has
+ * @todo needs a description
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function showPermissions($memID)
 {
@@ -2839,9 +2835,9 @@ function showPermissions($memID)
 }
 
 /**
- * View a member's warnings
+ * View a members warnings?
  *
- * @param int $memID The ID of the member
+ * @param int $memID id_member
  */
 function viewWarning($memID)
 {

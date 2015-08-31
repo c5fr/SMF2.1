@@ -10,9 +10,7 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Minor stuff shown above the main profile - mostly used for error messages and showing that the profile update was successful.
- */
+// Template for the profile side bar - goes before any other profile template.
 function template_profile_above()
 {
 	global $context;
@@ -20,9 +18,9 @@ function template_profile_above()
 	// Prevent Chrome from auto completing fields when viewing/editing other members profiles
 	if (isBrowser('is_chrome') && !$context['user']['is_owner'])
 		echo '
-	<script>
+	<script><!-- // --><![CDATA[
 		disableAutoComplete();
-	</script>';
+	// ]]></script>';
 
 	// If an error occurred while trying to save previously, give the user a clue!
 	echo '
@@ -36,16 +34,12 @@ function template_profile_above()
 					</div>';
 }
 
-/**
- * Template for any HTML needed below the profile (closing off divs/tables, etc.)
- */
+// Template for closing off table started in profile_above.
 function template_profile_below()
 {
 }
 
-/**
- * Template for showing off the spiffy popup of the menu
- */
+// Template for showing off the spiffy popup of the menu
 function template_profile_popup()
 {
 	global $context, $scripturl;
@@ -81,9 +75,6 @@ function template_profile_popup()
 		</div>';
 }
 
-/**
- * The "popup" showing the user's alerts
- */
 function template_alerts_popup()
 {
 	global $context, $txt, $scripturl;
@@ -122,7 +113,7 @@ function template_alerts_popup()
 
 	echo '
 		</div>
-		<script>
+		<script><!-- // --><![CDATA[
 		function markAlertsRead(obj) {
 			ajax_indicator(true);
 			$.get(
@@ -135,12 +126,9 @@ function template_alerts_popup()
 			);
 			return false;
 		}
-		</script>';
+		// ]]></script>';
 }
 
-/**
- * A simple template to say "You don't have any unread alerts".
- */
 function template_alerts_all_read()
 {
 	global $txt;
@@ -148,9 +136,7 @@ function template_alerts_all_read()
 	echo '<div class="no_unread">', $txt['alerts_no_unread'], '</div>';
 }
 
-/**
- * This template displays a user's details without any option to edit them.
- */
+// This template displays users details without any option to edit them.
 function template_summary()
 {
 	global $context, $settings, $scripturl, $modSettings, $txt;
@@ -452,9 +438,7 @@ function template_summary()
 <div class="clear"></div>';
 }
 
-/**
- * Template for showing all the posts of the user, in chronological order.
- */
+// Template for showing all the posts of the user, in chronological order.
 function template_showPosts()
 {
 	global $context, $scripturl, $txt;
@@ -542,9 +526,6 @@ function template_showPosts()
 		</div>';
 }
 
-/**
- * Template for showing alerts within the alerts popup
- */
 function template_showAlerts()
 {
 	global $context, $txt, $scripturl;
@@ -613,9 +594,7 @@ function template_showAlerts()
 	}
 }
 
-/**
- * Template for showing all of a user's drafts
- */
+// Template for showing all the drafts of the user.
 function template_showDrafts()
 {
 	global $context, $scripturl, $txt;
@@ -677,9 +656,7 @@ function template_showDrafts()
 		</div>';
 }
 
-/**
- * Template for showing and managing the buddy list.
- */
+// Template for showing all the buddies of the current user.
 function template_editBuddies()
 {
 	global $context, $scripturl, $txt;
@@ -775,7 +752,7 @@ function template_editBuddies()
 	echo '
 		<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '">
 	</form>
-	<script>
+	<script><!-- // --><![CDATA[
 		var oAddBuddySuggest = new smc_AutoSuggest({
 			sSelf: \'oAddBuddySuggest\',
 			sSessionId: smf_session_id,
@@ -786,12 +763,10 @@ function template_editBuddies()
 			sTextDeleteItem: \'', $txt['autosuggest_delete_item'], '\',
 			bItemList: false
 		});
-	</script>';
+	// ]]></script>';
 }
 
-/**
- * Template for showing the ignore list of the current user.
- */
+// Template for showing the ignore list of the current user.
 function template_editIgnoreList()
 {
 	global $context, $scripturl, $txt;
@@ -873,7 +848,7 @@ function template_editIgnoreList()
 		<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '">
 		<input type="submit" value="', $txt['ignore_add_button'], '" class="button_submit">
 	</form>
-	<script>
+	<script><!-- // --><![CDATA[
 		var oAddIgnoreSuggest = new smc_AutoSuggest({
 			sSelf: \'oAddIgnoreSuggest\',
 			sSessionId: \'', $context['session_id'], '\',
@@ -884,12 +859,10 @@ function template_editIgnoreList()
 			sTextDeleteItem: \'', $txt['autosuggest_delete_item'], '\',
 			bItemList: false
 		});
-	</script>';
+	// ]]></script>';
 }
 
-/**
- * This template shows an admin information on a users IP addresses used and errors attributed to them.
- */
+// This template shows an admin information on a users IP addresses used and errors attributed to them.
 function template_trackActivity()
 {
 	global $context, $scripturl, $txt;
@@ -944,9 +917,7 @@ function template_trackActivity()
 	template_show_list('track_user_list');
 }
 
-/**
- * The template for trackIP, allowing the admin to see where/who a certain IP has been used.
- */
+// The template for trackIP, allowing the admin to see where/who a certain IP has been used.
 function template_trackIP()
 {
 	global $context, $txt;
@@ -1033,9 +1004,6 @@ function template_trackIP()
 	template_show_list('track_user_list');
 }
 
-/**
- * This template shows an admin which permissions a user have and which group(s) give them each permission.
- */
 function template_showPermissions()
 {
 	global $context, $scripturl, $txt;
@@ -1190,9 +1158,7 @@ function template_showPermissions()
 	}
 }
 
-/**
- * Template for user statistics, showing graphs and the like.
- */
+// Template for user statistics, showing graphs and the like.
 function template_statPanel()
 {
 	global $context, $txt;
@@ -1334,9 +1300,7 @@ function template_statPanel()
 	</div>';
 }
 
-/**
- * Template for editing profile options.
- */
+// Template for editing profile options.
 function template_edit_options()
 {
 	global $context, $scripturl, $txt, $modSettings;
@@ -1555,9 +1519,7 @@ function template_edit_options()
 		<form name="spell_form" id="spell_form" method="post" accept-charset="', $context['character_set'], '" target="spellWindow" action="', $scripturl, '?action=spellcheck"><input type="hidden" name="spellstring" value=""></form>';
 }
 
-/**
- * Personal Message settings.
- */
+// Personal Message settings.
 function template_profile_pm_settings()
 {
 	global $context, $modSettings, $txt;
@@ -1619,9 +1581,7 @@ function template_profile_pm_settings()
 
 }
 
-/**
- * Template for showing theme settings. Note: template_options() actually adds the theme specific options.
- */
+// Template for showing theme settings. Note: template_options() actually adds the theme specific options.
 function template_profile_theme_settings()
 {
 	global $context, $modSettings, $txt;
@@ -1779,9 +1739,6 @@ function template_profile_theme_settings()
 							</dd>';
 }
 
-/**
- * The template for configuring alerts
- */
 function template_alert_configuration()
 {
 	global $context, $settings, $txt, $scripturl, $modSettings;
@@ -1810,7 +1767,7 @@ function template_alert_configuration()
 					</dt>
 					<dd>
 						<input type="hidden" name="notify_announcements" value="0">
-						<input type="checkbox" id="notify_announcements" name="notify_announcements" value="1"', !empty($context['member']['notify_announcements']) ? ' checked' : '', ' class="input_check">
+						<input type="checkbox" id="notify_announcements" name="notify_announcements"', !empty($context['member']['notify_announcements']) ? ' checked' : '', ' class="input_check">
 					</dd>';
 
 	if (!empty($modSettings['enable_ajax_alerts']))
@@ -1935,9 +1892,6 @@ function template_alert_configuration()
 		<br>';
 }
 
-/**
- * Template for showing which topics you're subscribed to
- */
 function template_alert_notifications_topics()
 {
 	global $txt;
@@ -1955,9 +1909,6 @@ function template_alert_notifications_topics()
 	template_show_list('topic_notification_list');
 }
 
-/**
- * Template for showing which boards you're subscribed to
- */
 function template_alert_notifications_boards()
 {
 	global $txt;
@@ -1974,9 +1925,7 @@ function template_alert_notifications_boards()
 	template_show_list('board_notification_list');
 }
 
-/**
- * Template for choosing group membership.
- */
+// Template for choosing group membership.
 function template_groupMembership()
 {
 	global $context, $scripturl, $txt;
@@ -2084,7 +2033,7 @@ function template_groupMembership()
 
 		// Javascript for the selector stuff.
 		echo '
-		<script>
+		<script><!-- // --><![CDATA[
 		var prevClass = "";
 		var prevDiv = "";
 		function highlightSelected(box)
@@ -2102,7 +2051,7 @@ function template_groupMembership()
 			echo '
 		highlightSelected("primdiv_' . $context['primary_group'] . '");';
 		echo '
-	</script>';
+	// ]]></script>';
 	}
 
 	echo '
@@ -2118,9 +2067,6 @@ function template_groupMembership()
 			</form>';
 }
 
-/**
- * Template for managing ignored boards
- */
 function template_ignoreboards()
 {
 	global $context, $txt, $scripturl;
@@ -2192,9 +2138,7 @@ function template_ignoreboards()
 	<br>';
 }
 
-/**
- * Simply loads some theme variables common to several warning templates.
- */
+// Simple load some theme variables common to several warning templates.
 function template_load_warning_variables()
 {
 	global $modSettings, $context;
@@ -2276,7 +2220,7 @@ function template_issueWarning()
 	template_load_warning_variables();
 
 	echo '
-	<script>
+	<script><!-- // --><![CDATA[
 		// Disable notification boxes as required.
 		function modifyWarnNotify()
 		{
@@ -2318,7 +2262,7 @@ function template_issueWarning()
 	echo '
 			setInnerHTML(document.getElementById(\'cur_level_div\'), slideAmount + \'% (\' + effectText + \')\');
 		}
-	</script>';
+	// ]]></script>';
 
 	echo '
 	<form action="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=issuewarning" method="post" class="flow_hidden" accept-charset="', $context['character_set'], '">
@@ -2435,7 +2379,7 @@ function template_issueWarning()
 	template_show_list('view_warnings');
 
 	echo '
-	<script>';
+	<script><!-- // --><![CDATA[';
 
 	if (!$context['user']['is_owner'])
 		echo '
@@ -2479,12 +2423,10 @@ function template_issueWarning()
 		}';
 
 	echo '
-	</script>';
+	// ]]></script>';
 }
 
-/**
- * Template to show for deleting a user's account - now with added delete post capability!
- */
+// Template to show for deleting a users account - now with added delete post capability!
 function template_deleteAccount()
 {
 	global $context, $scripturl, $txt;
@@ -2571,9 +2513,7 @@ function template_deleteAccount()
 		</form>';
 }
 
-/**
- * Template for the password box/save button stuck at the bottom of every profile page.
- */
+// Template for the password box/save button stuck at the bottom of every profile page.
 function template_profile_save()
 {
 	global $context, $txt;
@@ -2610,9 +2550,7 @@ function template_profile_save()
 					</div>';
 }
 
-/**
- * Small template for showing an error message upon a save problem in the profile.
- */
+// Small template for showing an error message upon a save problem in the profile.
 function template_error_message()
 {
 	global $context, $txt;
@@ -2639,9 +2577,7 @@ function template_error_message()
 		</div>';
 }
 
-/**
- * Display a load of drop down selectors for allowing the user to change group.
- */
+// Display a load of drop down selectors for allowing the user to change group.
 function template_profile_group_manage()
 {
 	global $context, $txt, $scripturl;
@@ -2679,17 +2615,15 @@ function template_profile_group_manage()
 		echo '
 								</span>
 								<a href="javascript:void(0);" onclick="document.getElementById(\'additional_groupsList\').style.display = \'block\'; document.getElementById(\'additional_groupsLink\').style.display = \'none\'; return false;" id="additional_groupsLink" style="display: none;" class="toggle_down">', $txt['additional_membergroups_show'], '</a>
-								<script>
+								<script><!-- // --><![CDATA[
 									document.getElementById("additional_groupsList").style.display = "none";
 									document.getElementById("additional_groupsLink").style.display = "";
-								</script>
+								// ]]></script>
 							</dd>';
 
 }
 
-/**
- * Callback function for entering a birthdate!
- */
+// Callback function for entering a birthdate!
 function template_profile_birthdate()
 {
 	global $txt, $context;
@@ -2707,9 +2641,7 @@ function template_profile_birthdate()
 							</dd>';
 }
 
-/**
- * Show the signature editing box?
- */
+// Show the signature editing box?
 function template_profile_signature_modify()
 {
 	global $txt, $context;
@@ -2759,7 +2691,7 @@ function template_profile_signature_modify()
 
 	// Some javascript used to count how many characters have been used so far in the signature.
 	echo '
-								<script>
+								<script><!-- // --><![CDATA[
 									var maxLength = ', $context['signature_limits']['max_length'], ';
 
 									$(document).ready(function() {
@@ -2768,13 +2700,10 @@ function template_profile_signature_modify()
 											return ajax_getSignaturePreview(true);
 										});
 									});
-								</script>
+								// ]]></script>
 							</dd>';
 }
 
-/**
- * Template for selecting an avatar
- */
 function template_profile_avatar_select()
 {
 	global $context, $txt, $modSettings;
@@ -2809,7 +2738,7 @@ function template_profile_avatar_select()
 										<select name="file" id="file" size="10" style="display: none;" onchange="showAvatar()" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'server_stored\');" disabled><option></option></select>
 									</div>
 									<div><img name="avatar" id="avatar" src="', !empty($context['member']['avatar']['allow_external']) && $context['member']['avatar']['choice'] == 'external' ? $context['member']['avatar']['external'] : $modSettings['avatar_url'] . '/blank.png', '" alt="Do Nothing"></div>
-									<script>
+									<script><!-- // --><![CDATA[
 										var files = ["' . implode('", "', $context['avatar_list']) . '"];
 										var avatar = document.getElementById("avatar");
 										var cat = document.getElementById("cat");
@@ -2825,7 +2754,7 @@ function template_profile_avatar_select()
 										else
 											previewExternalAvatar(avatar.src)
 
-									</script>
+									// ]]></script>
 								</div>';
 	}
 
@@ -2876,7 +2805,7 @@ function template_profile_avatar_select()
 	}
 
 	echo '
-								<script>
+								<script><!-- // --><![CDATA[
 									', !empty($context['member']['avatar']['allow_server_stored']) ? 'document.getElementById("avatar_server_stored").style.display = "' . ($context['member']['avatar']['choice'] == 'server_stored' ? '' : 'none') . '";' : '', '
 									', !empty($context['member']['avatar']['allow_external']) ? 'document.getElementById("avatar_external").style.display = "' . ($context['member']['avatar']['choice'] == 'external' ? '' : 'none') . '";' : '', '
 									', !empty($context['member']['avatar']['allow_upload']) ? 'document.getElementById("avatar_upload").style.display = "' . ($context['member']['avatar']['choice'] == 'upload' ? '' : 'none') . '";' : '', '
@@ -2920,15 +2849,11 @@ function template_profile_avatar_select()
 												break;
 										}
 									}
-								</script>
+								// ]]></script>
 							</dd>';
 }
 
-/**
- * This is just a really little helper to avoid duplicating code unnecessarily
- *
- * @param string $type The type of avatar
- */
+// This is just a really little helper to avoid duplicating code unnecessarily
 function template_max_size($type)
 {
 	global $modSettings, $txt;
@@ -2944,9 +2869,7 @@ function template_max_size($type)
 									<div class="smalltext">', sprintf($txt['avatar_max_size_' . $suffix], $w, $h), '</div>';
 }
 
-/**
- * Select the time format!
- */
+// Select the time format!
 function template_profile_timeformat_modify()
 {
 	global $context, $txt, $scripturl, $settings;
@@ -2969,9 +2892,7 @@ function template_profile_timeformat_modify()
 							</dd>';
 }
 
-/**
- * Template for picking a theme
- */
+// Theme?
 function template_profile_theme_pick()
 {
 	global $txt, $context, $scripturl;
@@ -2985,9 +2906,7 @@ function template_profile_theme_pick()
 							</dd>';
 }
 
-/**
- * Smiley set picker.
- */
+// Smiley set picker.
 function template_profile_smiley_pick()
 {
 	global $txt, $context, $modSettings, $settings;
@@ -3006,9 +2925,6 @@ function template_profile_smiley_pick()
 							</dd>';
 }
 
-/**
- * Template for setting up and managing Two-Factor Authentication.
- */
 function template_tfasetup()
 {
 	global $txt, $context, $scripturl, $modSettings;
@@ -3061,9 +2977,6 @@ function template_tfasetup()
 							</div>';
 }
 
-/**
- * Template for setting up 2FA backup code
- */
 function template_tfasetup_backup()
 {
 	global $context, $txt;
@@ -3080,9 +2993,6 @@ function template_tfasetup_backup()
 							</div>';
 }
 
-/**
- * Simple template for showing the 2FA area when editing a profile.
- */
 function template_profile_tfa()
 {
 	global $context, $txt, $scripturl, $modSettings;

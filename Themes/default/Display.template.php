@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * This tempate handles displaying a topic
- */
 function template_main()
 {
 	global $context, $settings, $options, $txt, $scripturl, $modSettings;
@@ -23,15 +20,6 @@ function template_main()
 		echo '
 			<div class="infobox">
 				', $txt['report_sent'], '
-			</div>';
-	}
-
-	// Let them know why their message became unapproved.
-	if ($context['becomesUnapproved'])
-	{
-		echo '
-			<div class="noticebox">
-				', $txt['post_becomesUnapproved'], '
 			</div>';
 	}
 
@@ -230,7 +218,7 @@ function template_main()
 	template_quickreply();
 
 		echo '
-				<script>';
+				<script><!-- // --><![CDATA[';
 
 	if (!empty($options['display_quick_mod']) && $options['display_quick_mod'] == 1 && $context['can_remove_post'])
 		echo '
@@ -328,15 +316,10 @@ function template_main()
 					ignore_toggles([', implode(', ', $context['ignoredMsgs']), '], ', JavaScriptEscape($txt['show_ignore_user_post']), ');';
 
 	echo '
-				</script>';
+				// ]]></script>';
 
 }
 
-/**
- * Template for displaying a single post.
- *
- * @param array $message An array of information about the message to display. Should have 'id' and 'member'. Can also have 'first_new', 'is_ignored' and 'css_class'.
- */
 function template_single_post($message)
 {
 	global $context, $settings, $options, $txt, $scripturl, $modSettings;
@@ -617,7 +600,7 @@ function template_single_post($message)
 			}
 
 			echo '
-									<div class="floatleft attachment">';
+									<div class="floatleft">';
 
 			if ($attachment['is_image'])
 			{
@@ -626,10 +609,10 @@ function template_single_post($message)
 
 				if ($attachment['thumbnail']['has_thumb'])
 					echo '
-											<a href="', $attachment['href'], ';image" id="link_', $attachment['id'], '" onclick="', $attachment['thumbnail']['javascript'], '"><img src="', $attachment['thumbnail']['href'], '" alt="" id="thumb_', $attachment['id'], '" class="atc_img"></a>';
+											<a href="', $attachment['href'], ';image" id="link_', $attachment['id'], '" onclick="', $attachment['thumbnail']['javascript'], '"><img src="', $attachment['thumbnail']['href'], '" alt="" id="thumb_', $attachment['id'], '"></a>';
 				else
 					echo '
-											<img src="' . $attachment['href'] . ';image" alt="" width="' . $attachment['width'] . '" height="' . $attachment['height'] . '" class="atc_img">';
+											<img src="' . $attachment['href'] . ';image" alt="" width="' . $attachment['width'] . '" height="' . $attachment['height'] . '"/>';
 
 				echo '
 										</div>';
@@ -837,9 +820,6 @@ function template_single_post($message)
 				<hr class="post_separator">';
 }
 
-/**
- * The template for displaying the quick reply box.
- */
 function template_quickreply()
 {
 	global $context, $modSettings, $scripturl, $options, $txt;
@@ -890,7 +870,7 @@ function template_quickreply()
 
 		echo '
 						', template_control_richedit($context['post_box_name'], 'smileyBox_message', 'bbcBox_message'), '
-						<script>
+						<script><!-- // --><![CDATA[
 							function insertQuoteFast(messageid)
 							{
 								if (window.XMLHttpRequest)
@@ -908,7 +888,7 @@ function template_quickreply()
 
 								ajax_indicator(false);
 							}
-						</script>';
+						// ]]></script>';
 
 	// Is visual verification enabled?
 	if ($context['require_verification'])
@@ -936,7 +916,7 @@ function template_quickreply()
 	// draft autosave available and the user has it enabled?
 	if (!empty($context['drafts_autosave']))
 		echo '
-			<script>
+			<script><!-- // --><![CDATA[
 				var oDraftAutoSave = new smf_DraftAutoSave({
 					sSelf: \'oDraftAutoSave\',
 					sLastNote: \'draft_lastautosave\',
@@ -946,14 +926,14 @@ function template_quickreply()
 					iBoard: ', (empty($context['current_board']) ? 0 : $context['current_board']), ',
 					iFreq: ', (empty($modSettings['masterAutoSaveDraftsDelay']) ? 60000 : $modSettings['masterAutoSaveDraftsDelay'] * 1000), '
 				});
-			</script>';
+			// ]]></script>';
 
 	if ($context['show_spellchecking'])
 		echo '
 			<form action="', $scripturl, '?action=spellcheck" method="post" accept-charset="', $context['character_set'], '" name="spell_form" id="spell_form" target="spellWindow"><input type="hidden" name="spellstring" value=""></form>';
 
 	echo '
-				<script>
+				<script><!-- // --><![CDATA[
 					var oQuickReply = new QuickReply({
 						bDefaultCollapsed: false,
 						iTopicId: ', $context['current_topic'], ',
@@ -970,6 +950,6 @@ function template_quickreply()
 					var oEditorID = "', $context['post_box_name'] ,'";
 					var oEditorObject = oEditorHandle_', $context['post_box_name'], ';
 					var oJumpAnchor = "quickreply";
-				</script>';
+				// ]]></script>';
 }
 ?>

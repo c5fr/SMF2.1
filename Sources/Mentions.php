@@ -25,10 +25,10 @@ class Mentions
 	 *
 	 * @static
 	 * @access public
-	 * @param string $content_type The content type
-	 * @param int $content_id The ID of the desired content
+	 * @param string $content_type
+	 * @param int $content_id
 	 * @param array $members Whether to limit to a specific sect of members
-	 * @return array An array of arrays containing info about each member mentioned
+	 * @return array
 	 */
 	public static function getMentionsByContent($content_type, $content_id, array $members = array())
 	{
@@ -72,10 +72,11 @@ class Mentions
 	 *
 	 * @static
 	 * @access public
-	 * @param string $content_type The content type
-	 * @param int $content_id The ID of the specified content
-	 * @param array $members An array of members who have been mentioned
-	 * @param int $id_member The ID of the member who mentioned them
+	 * @param string $content_type
+	 * @param int $content_id
+	 * @param array $members
+	 * @param int $id_member
+	 * @return void
 	 */
 	public static function insertMentions($content_type, $content_id, array $members, $id_member)
 	{
@@ -97,9 +98,9 @@ class Mentions
 	 *
 	 * @static
 	 * @access public
-	 * @param string $body The text to look for mentions in
-	 * @param array $members An array of arrays containing info about members (each should have 'id' and 'member')
-	 * @return string The body with mentions replaced
+	 * @param string $body
+	 * @param array $members
+	 * @return string
 	 */
 	public static function getBody($body, array $members)
 	{
@@ -114,8 +115,8 @@ class Mentions
 	 *
 	 * @static
 	 * @access public
-	 * @param string $body The body to get mentions from
-	 * @return array An array of arrays containing members who were mentioned (each has 'id_member' and 'real_name')
+	 * @param string $body
+	 * @return array
 	 */
 	public static function getMentionedMembers($body)
 	{
@@ -174,8 +175,8 @@ class Mentions
 	 *
 	 * @static
 	 * @access protected
-	 * @param string $body The text to look for mentions in
-	 * @return array An array of names of members who have been mentioned
+	 * @param string $body
+	 * @return array
 	 */
 	protected static function getPossibleMentions($body)
 	{

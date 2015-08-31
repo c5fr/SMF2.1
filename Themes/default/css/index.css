@@ -150,13 +150,12 @@ ul#likes li {
 }
 
 ul#likes span.avatar {
-	max-width: 100px;
-	max-height: 100px;
-	padding: 0 10px 0 0;
+	width: 45px;
+	height: 45px;
+	padding: 2px;
 }
 ul#likes span.avatar img {
-	max-height: 90px;
-	max-width: 90px;
+	max-height: 40px;
 }
 ul#likes li span.description {
 	font-style: italic;
@@ -341,7 +340,7 @@ h3.largetext {
 .bbc_code {
 	display: block;
 	font-family: "DejaVu Sans Mono", Monaco, Consolas, monospace;
-	font-size: 0.75em;
+	font-size: 0.9em;
 	background: #f3f3f3;
 	border: 1px solid #dfdfdf;
 	border-top: 2px solid #bbb;
@@ -385,9 +384,11 @@ h3.largetext {
 .bbc_color a {
 	color: inherit;
 }
-.bbc_img, .atc_img {
+.bbc_bold {
+	font-weight: bold;
+}
+.bbc_img {
 	border: 0;
-	max-width: 100%;
 }
 .bbc_table {
 	font: inherit;
@@ -398,10 +399,17 @@ h3.largetext {
 	color: inherit;
 	vertical-align: top;
 }
+.bbc_u {
+	text-decoration: underline;
+}
 .bbc_list {
 	text-align: left;
 	padding: 0 0 0 35px;
 	list-style-type: inherit;
+}
+/* Everything is same except HTML5 valid */
+.bbc_tt {
+	font-family: "dejavu sans mono", "monaco", "lucida console", "courier new", monospace;
 }
 /* No image should have a border when linked. */
 a img {
@@ -1058,7 +1066,6 @@ img.sort, .sort {
 /* These divisions wrap the forum sections when a forum width is set. */
 #wrapper, .frame {
 	margin: 0 auto;
-	width: 90%;
 }
 
 /* Box-shadow only on this one. */
@@ -2864,6 +2871,9 @@ h3 .collapse {
 	float: right;
 	margin: 4px 4px 0 0;
 }
+.cat_bar .desc {
+	color: #FFF;
+}
 div.icon span {
 	background: url(../images/boardicons.png) no-repeat 0 0;
 	display: inline-block;
@@ -3352,9 +3362,8 @@ img.smiley {
 .attachments {
 	padding: 12px 0 0 0;
 }
-.attachment {
+.attachments .floatleft {
 	padding: 0 6px 8px 6px;
-	max-width: 100%;
 }
 .attachments_top {
 	margin: 0 auto;
@@ -3551,11 +3560,10 @@ div.cat_bar {
 /* Styles for rounded headers. */
 .cat_bar .desc
 {
-	color: #FFF;
-	font-size: 12px;
+	font-size: 10px;
 	line-height: 1.5em;
 	font-weight: normal;
-	margin: -8px 0 4px 8px;
+	margin: -8px 0 4px 12px;
 }
 h3.catbg {
 	overflow: hidden;

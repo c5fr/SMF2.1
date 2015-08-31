@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * The form that asks how you want to split things
- */
 function template_ask()
 {
 	global $context, $txt, $scripturl;
@@ -50,9 +47,6 @@ function template_ask()
 	</div>';
 }
 
-/**
- * A simple confirmation that things were split as expected, with links to the current board and the old and new topics.
- */
 function template_main()
 {
 	global $context, $txt, $scripturl;
@@ -79,9 +73,6 @@ function template_main()
 	</div>';
 }
 
-/**
- * The form for selecting which posts to split.
- */
 function template_select()
 {
 	global $context, $txt, $scripturl;
@@ -155,7 +146,7 @@ function template_select()
 			</div>
 		</form>
 	</div>
-	<script>
+	<script><!-- // --><![CDATA[
 		var start = new Array();
 		start[0] = ', $context['not_selected']['start'], ';
 		start[1] = ', $context['selected']['start'], ';
@@ -225,7 +216,7 @@ function template_select()
 			applyWindowClasses(document.getElementById("messages_selected"));
 			applyWindowClasses(document.getElementById("messages_not_selected"));
 		}
-	</script>';
+	// ]]></script>';
 }
 
 ?>

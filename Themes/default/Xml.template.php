@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- *
- */
 function template_sendbody()
 {
 	global $context;
@@ -23,9 +20,6 @@ function template_sendbody()
 </smf>';
 }
 
-/**
- * This defines the XML for the AJAX quote feature
- */
 function template_quotefast()
 {
 	global $context;
@@ -36,9 +30,6 @@ function template_quotefast()
 </smf>';
 }
 
-/**
- * This defines the XML for the inline edit feature
- */
 function template_modifyfast()
 {
 	global $context;
@@ -51,9 +42,6 @@ function template_modifyfast()
 
 }
 
-/**
- * The XML for handling things when you're done editing a post inline
- */
 function template_modifydone()
 {
 	global $context, $txt;
@@ -80,9 +68,6 @@ function template_modifydone()
 </smf>';
 }
 
-/**
- * This handles things when editing a topic's subject from the messageindex.
- */
 function template_modifytopicdone()
 {
 	global $context, $txt;
@@ -110,9 +95,6 @@ function template_modifytopicdone()
 </smf>';
 }
 
-/**
- * The massive XML for previewing posts.
- */
 function template_post()
 {
 	global $context;
@@ -158,9 +140,6 @@ function template_post()
 </smf>';
 }
 
-/**
- * All the XML for previewing a PM
- */
 function template_pm()
 {
 	global $context, $txt;
@@ -190,9 +169,6 @@ function template_pm()
 </smf>';
 }
 
-/**
- * The XML for previewing a warning
- */
 function template_warning()
 {
 	global $context;
@@ -217,9 +193,6 @@ function template_warning()
 </smf>';
 }
 
-/**
- * The XML for hiding/showing stats sections via AJAX
- */
 function template_stats()
 {
 	global $context, $modSettings;
@@ -241,9 +214,6 @@ function template_stats()
 </smf>';
 }
 
-/**
- * The XML for selecting items to split
- */
 function template_split()
 {
 	global $context;
@@ -270,9 +240,7 @@ function template_split()
 </smf>';
 }
 
-/**
- * This is just to hold off some errors if people are stupid.
- */
+// This is just to hold off some errors if people are stupid.
 if (!function_exists('template_button_strip'))
 {
 	function template_button_strip($button_strip, $direction = 'top', $strip_options = array())
@@ -286,9 +254,6 @@ if (!function_exists('template_button_strip'))
 	}
 }
 
-/**
- * XML for search results
- */
 function template_results()
 {
 	global $context, $txt;
@@ -351,9 +316,6 @@ function template_results()
 </smf>';
 }
 
-/**
- * The XML for the Jump To box
- */
 function template_jump_to()
 {
 	global $context;
@@ -372,9 +334,6 @@ function template_jump_to()
 </smf>';
 }
 
-/**
- * The XML for displaying a column of message icons and selecting one via AJAX
- */
 function template_message_icons()
 {
 	global $context;
@@ -388,9 +347,6 @@ function template_message_icons()
 </smf>';
 }
 
-/**
- * The XML for instantly showing whether a username is valid on the registration page
- */
 function template_check_username()
 {
 	global $context;
@@ -401,9 +357,7 @@ function template_check_username()
 </smf>';
 }
 
-/**
- * This prints XML in its most generic form.
- */
+// This prints XML in it's most generic form.
 function template_generic_xml()
 {
 	global $context;
@@ -414,14 +368,7 @@ function template_generic_xml()
 	template_generic_xml_recursive($context['xml_data'], 'smf', '', -1);
 }
 
-/**
- * Recursive function for displaying generic XML data.
- *
- * @param array $xml_data An array of XML data
- * @param string $parent_ident The parent tag
- * @param string $child_ident The child tag
- * @param int $level How many levels to indent the code
- */
+// Recursive function for displaying generic XML data.
 function template_generic_xml_recursive($xml_data, $parent_ident, $child_ident, $level)
 {
 	// This is simply for neat indentation.

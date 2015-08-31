@@ -12,14 +12,8 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Class ApprovePost_Notify_Background
- */
 class ApprovePost_Notify_Background extends SMF_BackgroundTask
 {
-	/**
-	 * @return bool
-	 */
 	public function execute()
 	{
 		global $smcFunc, $sourcedir, $scripturl, $modSettings, $language;
@@ -27,7 +21,6 @@ class ApprovePost_Notify_Background extends SMF_BackgroundTask
 		$msgOptions = $this->_details['msgOptions'];
 		$topicOptions = $this->_details['topicOptions'];
 		$posterOptions = $this->_details['posterOptions'];
-		$type = $this->_details['type'];
 
 		$members = array();
 		$alert_rows = array();
@@ -36,6 +29,7 @@ class ApprovePost_Notify_Background extends SMF_BackgroundTask
 		require_once($sourcedir . '/Subs-Members.php');
 		$modMembers = membersAllowedTo('approve_posts', $topicOptions['board']);
 
+		// Find the people interested in receiving notifications for this topic
 		$request = $smcFunc['db_query']('', '
 			SELECT id_member, email_address, lngfile
 			FROM {db_prefix}members
@@ -58,7 +52,7 @@ class ApprovePost_Notify_Background extends SMF_BackgroundTask
 
 		require_once($sourcedir . '/Subs-Notify.php');
 		$members = array_unique($members);
-		$prefs = getNotifyPrefs($members, 'unapproved_post', true);
+		$prefs = getNotifyPrefs($members, 'unapproved_post');
 		foreach ($watched as $member => $data)
 		{
 			$pref = !empty($prefs[$member]['unapproved_post']) ? $prefs[$member]['unapproved_post'] : 0;
@@ -88,7 +82,7 @@ class ApprovePost_Notify_Background extends SMF_BackgroundTask
 					'member_name' => $posterOptions['name'],
 					'content_type' => 'unapproved',
 					'content_id' => $topicOptions['id'],
-					'content_action' => $type,
+					'content_action' => 'post',
 					'is_read' => 0,
 					'extra' => serialize(array(
 						'topic' => $topicOptions['id'],

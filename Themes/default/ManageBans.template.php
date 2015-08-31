@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Add or edit a ban
- */
 function template_ban_edit()
 {
 	global $context, $scripturl, $txt, $modSettings;
@@ -191,7 +188,7 @@ function template_ban_edit()
 
 	echo '
 	</div>
-	<script>
+	<script><!-- // --><![CDATA[
 		var fUpdateStatus = function ()
 		{
 			document.getElementById("expire_date").disabled = !document.getElementById("expires_one_day").checked;
@@ -236,12 +233,9 @@ function template_ban_edit()
 				alert(\'', $txt['ban_restriction_empty'], '\');
 				return false;
 			}
-		}</script>';
+		}// ]]></script>';
 }
 
-/**
- * Add or edit a ban trigger
- */
 function template_ban_edit_trigger()
 {
 	global $context, $txt, $modSettings;
@@ -303,7 +297,7 @@ function template_ban_edit_trigger()
 			<input type="hidden" name="', $context['admin-bet_token_var'], '" value="', $context['admin-bet_token'], '">
 		</form>
 	</div>
-	<script>
+	<script><!-- // --><![CDATA[
 		var oAddMemberSuggest = new smc_AutoSuggest({
 			sSelf: \'oAddMemberSuggest\',
 			sSessionId: smf_session_id,
@@ -321,7 +315,7 @@ function template_ban_edit_trigger()
 			return true;
 		}
 		oAddMemberSuggest.registerCallback(\'onBeforeUpdate\', \'onUpdateName\');
-	</script>';
+	// ]]></script>';
 }
 
 ?>

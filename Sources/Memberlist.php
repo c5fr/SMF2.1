@@ -472,6 +472,8 @@ function MLSearch()
 			$fields += array(2 => 'email_address');
 			$search_fields[] = 'email';
 		}
+		else
+			$condition = '';
 
 		if ($smcFunc['db_case_sensitive'])
 			foreach ($fields as $key => $field)
@@ -505,7 +507,7 @@ function MLSearch()
 				LEFT JOIN {db_prefix}membergroups AS mg ON (mg.id_group = CASE WHEN mem.id_group = {int:regular_id_group} THEN mem.id_post_group ELSE mem.id_group END)' .
 				(empty($customJoin) ? '' : implode('
 				', $customJoin)) . '
-			WHERE (' . implode( ' ' . $query . ' OR ', $fields) . ' ' . $query . ')
+			WHERE (' . implode( ' ' . $query . ' OR ', $fields) . ' ' . $query . $condition . ')
 				AND mem.is_activated = {int:is_activated}',
 			$query_parameters
 		);
@@ -522,7 +524,7 @@ function MLSearch()
 				LEFT JOIN {db_prefix}membergroups AS mg ON (mg.id_group = CASE WHEN mem.id_group = {int:regular_id_group} THEN mem.id_post_group ELSE mem.id_group END)' .
 				(empty($customJoin) ? '' : implode('
 				', $customJoin)) . '
-			WHERE (' . implode( ' ' . $query . ' OR ', $fields) . ' ' . $query . ')
+			WHERE (' . implode( ' ' . $query . ' OR ', $fields) . ' ' . $query . $condition . ')
 				AND mem.is_activated = {int:is_activated}
 			ORDER BY {raw:sort}
 			LIMIT ' . $_REQUEST['start'] . ', ' . $modSettings['defaultMaxMembers'],
@@ -577,7 +579,7 @@ function MLSearch()
  * Retrieves results of the request passed to it
  * Puts results of request into the context for the sub template.
  *
- * @param resource $request An SQL result resource
+ * @param resource $request
  */
 function printMemberListRows($request)
 {
@@ -648,7 +650,7 @@ function printMemberListRows($request)
 /**
  * Sets the label, sort and join info for every custom field column.
  *
- * @return array An array of info about the custom fields for the member list
+ * @return array
  */
 function getCustFieldsMList()
 {

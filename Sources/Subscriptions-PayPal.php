@@ -23,14 +23,14 @@ if (!defined('SMF'))
 class paypal_display
 {
 	/**
-	 * @var string Name of this payment gateway
+	 * Name of this payment gateway
 	 */
 	public $title = 'PayPal';
 
 	/**
 	 * Return the admin settings for this gateway
 	 *
-	 * @return array An array of settings data
+	 * @return array
 	 */
 	public function getGatewaySettings()
 	{
@@ -39,18 +39,11 @@ class paypal_display
 		$setting_data = array(
 			array(
 				'email', 'paypal_email',
-				'subtext' => $txt['paypal_email_desc'],
-				'size' => 60
-			),
-			array(
-				'email', 'paypal_additional_emails',
-				'subtext' => $txt['paypal_additional_emails_desc'],
-				'size' => 60
+				'subtext' => $txt['paypal_email_desc']
 			),
 			array(
 				'email', 'paypal_sandbox_email',
-				'subtext' => $txt['paypal_sandbox_email_desc'],
-				'size' => 60
+				'subtext' => $txt['paypal_sandbox_email_desc']
 			),
 		);
 
@@ -60,7 +53,7 @@ class paypal_display
 	/**
 	 * Is this enabled for new payments?
 	 *
-	 * @return boolean Whether this gateway is enabled (for PayPal, whether the PayPal email is set)
+	 * @return boolean
 	 */
 	public function gatewayEnabled()
 	{
@@ -75,12 +68,12 @@ class paypal_display
 	 * Called from Profile-Actions.php to return a unique set of fields for the given gateway
 	 * plus all the standard ones for the subscription form
 	 *
-	 * @param string $unique_id The unique ID of this gateway
-	 * @param array $sub_data Subscription data
-	 * @param int|float $value The amount of the subscription
-	 * @param string $period
-	 * @param string $return_url The URL to return the user to after processing the payment
-	 * @return array An array of data for the form
+	 * @param type $unique_id
+	 * @param type $sub_data
+	 * @param type $value
+	 * @param type $period
+	 * @param type $return_url
+	 * @return string
 	 */
 	public function fetchGatewayFields($unique_id, $sub_data, $value, $period, $return_url)
 	{
@@ -153,7 +146,7 @@ class paypal_payment
 	/**
 	 * This function returns true/false for whether this gateway thinks the data is intended for it.
 	 *
-	 * @return boolean Whether this gateway things the data is valid
+	 * @return boolean
 	 */
 	public function isValid()
 	{
@@ -170,9 +163,9 @@ class paypal_payment
 			$_POST['business'] = $_POST['receiver_email'];
 
 		// Are we testing?
-		if (empty($modSettings['paidsubs_test']) && strtolower($modSettings['paypal_sandbox_email']) != strtolower($_POST['business']) && (empty($modSettings['paypal_additional_emails']) || !in_array(strtolower($_POST['business']), explode(',', strtolower($modSettings['paypal_additional_emails'])))))
+		if (!empty($modSettings['paidsubs_test']) && $modSettings['paypal_sandbox_email'] !== $_POST['business'] && (empty($modSettings['paypal_additional_emails']) || !in_array($_POST['business'], explode(',', $modSettings['paypal_additional_emails']))))
 			return false;
-		elseif (strtolower($modSettings['paypal_email']) != strtolower($_POST['business']) && (empty($modSettings['paypal_additional_emails']) || !in_array(strtolower($_POST['business']), explode(',', $modSettings['paypal_additional_emails']))))
+		elseif ($modSettings['paypal_email'] !== $_POST['business'] && (empty($modSettings['paypal_additional_emails']) || !in_array($_POST['business'], explode(',', $modSettings['paypal_additional_emails']))))
 			return false;
 		return true;
 	}
@@ -185,7 +178,7 @@ class paypal_payment
 	 *
 	 * If valid returns the subscription and member IDs we are going to process if it passes
 	 *
-	 * @return string A string containing the subscription ID and member ID, separated by a +
+	 * @return string
 	 */
 	public function precheck()
 	{
@@ -269,7 +262,7 @@ class paypal_payment
 			exit;
 
 		// Check that this is intended for us.
-		if (strtolower($modSettings['paypal_email']) != strtolower($_POST['business']) && (empty($modSettings['paypal_additional_emails']) || !in_array(strtolower($_POST['business']), explode(',', strtolower($modSettings['paypal_additional_emails'])))))
+		if ($modSettings['paypal_email'] !== $_POST['business'] && (empty($modSettings['paypal_additional_emails']) || !in_array($_POST['business'], explode(',', $modSettings['paypal_additional_emails']))))
 			exit;
 
 		// Is this a subscription - and if so is it a secondary payment that we need to process?
@@ -295,7 +288,7 @@ class paypal_payment
 	/**
 	 * Is this a refund?
 	 *
-	 * @return boolean Whether this is a refund
+	 * @return boolean
 	 */
 	public function isRefund()
 	{
@@ -308,7 +301,7 @@ class paypal_payment
 	/**
 	 * Is this a subscription?
 	 *
-	 * @return boolean Whether this is a subscription
+	 * @return boolean
 	 */
 	public function isSubscription()
 	{
@@ -321,7 +314,7 @@ class paypal_payment
 	/**
 	 * Is this a normal payment?
 	 *
-	 * @return boolean Whether this is a normal payment
+	 * @return boolean
 	 */
 	public function isPayment()
 	{
@@ -334,7 +327,7 @@ class paypal_payment
 	/**
 	 * Is this a cancellation?
 	 *
-	 * @return boolean Whether this is a cancellation
+	 * @return boolean
 	 */
 	public function isCancellation()
 	{
@@ -350,9 +343,7 @@ class paypal_payment
 	/**
 	 * Things to do in the event of a cancellation
 	 *
-	 * @param string $subscription_id
-	 * @param int $member_id
-	 * @param array $subscription_info
+	 * @return void
 	 */
 	public function performCancel($subscription_id, $member_id, $subscription_info)
 	{
@@ -365,7 +356,7 @@ class paypal_payment
 	/**
 	 * How much was paid?
 	 *
-	 * @return float The amount paid
+	 * @return float
 	 */
 	public function getCost()
 	{
@@ -401,8 +392,7 @@ class paypal_payment
 	/**
 	 * A private function to find out the subscription details.
 	 *
-	 * @access private
-	 * @return boolean|void False on failure, otherwise just sets $_POST['item_number']
+	 * @return boolean
 	 */
 	private function _findSubscription()
 	{

@@ -53,11 +53,8 @@ function template_init()
 	// Set the following variable to true if this theme requires the optional theme strings file to be loaded.
 	$settings['require_theme_strings'] = false;
 
-	// Set the following variable to true is this theme wants to display the avatar of the user that posted the last and the first post on the message index and recent pages.
+	// Set the following variable to true is this theme wants to display the avatar of the user that posted the last post on the board index and message index.
 	$settings['avatars_on_indexes'] = false;
-
-	// Set the following variable to true is this theme wants to display the avatar of the user that posted the last post on the board index.
-	$settings['avatars_on_boardIndex'] = false;
 
 	// This defines the formatting for the page indexes used throughout the forum.
 	$settings['page_index'] = array(
@@ -92,6 +89,11 @@ function template_html_above()
 
 	// load in any css from mods or themes so they can overwrite if wanted
 	template_css();
+
+	// Save some database hits, if a width for multiple wrappers is set in admin.
+	if (!empty($settings['forum_width']))
+		echo '
+	<style type="text/css">#wrapper, .frame {width: ', $settings['forum_width'], ';}</style>';
 
 	// load in any javascript files from mods and themes
 	template_javascript();
@@ -164,9 +166,6 @@ function template_html_above()
 		'messageindex' : (!empty($context['current_topic']) ? 'display' : 'home')), !empty($context['current_board']) ? ' board_' . $context['current_board'] : '', '">';
 }
 
-/**
- * The upper part of the main template layer. This is the stuff that shows above the main forum content.
- */
 function template_body_above()
 {
 	global $context, $settings, $scripturl, $txt, $modSettings;
@@ -328,9 +327,6 @@ function template_body_above()
 			<div id="main_content_section">';
 }
 
-/**
- * The stuff shown immediately below the main content, including the footer
- */
 function template_body_below()
 {
 	global $context, $txt, $scripturl, $modSettings;
@@ -366,9 +362,6 @@ function template_body_below()
 
 }
 
-/**
- * This shows any deferred JavaScript and closes out the HTML
- */
 function template_html_below()
 {
 	// load in any javascipt that could be deferred to the end of the page
@@ -381,8 +374,7 @@ function template_html_below()
 
 /**
  * Show a linktree. This is that thing that shows "My Community | General Category | General Discussion"..
- *
- * @param bool $force_show Whether to force showing it even if settings say otherwise
+ * @param bool $force_show = false
  */
 function theme_linktree($force_show = false)
 {
@@ -460,7 +452,7 @@ function template_menu()
 		echo '
 						<li id="button_', $act, '"', !empty($button['sub_buttons']) ? ' class="subsections"' :'', '>
 							<a', $button['active_button'] ? ' class="active"' : '', ' href="', $button['href'], '"', isset($button['target']) ? ' target="' . $button['target'] . '"' : '', '>
-								', $button['icon'],'<span class="textmenu">', $button['title'], '</span>
+								', $button['icon'], $button['title'], '
 							</a>';
 
 		if (!empty($button['sub_buttons']))
@@ -510,10 +502,9 @@ function template_menu()
 
 /**
  * Generate a strip of buttons.
- *
- * @param array $button_strip An array with info for displaying the strip
- * @param string $direction The direction
- * @param array $strip_options Options for the button strip
+ * @param array $button_strip
+ * @param string $direction = ''
+ * @param array $strip_options = array()
  */
 function template_button_strip($button_strip, $direction = '', $strip_options = array())
 {
@@ -573,9 +564,6 @@ function template_button_strip($button_strip, $direction = '', $strip_options = 
 		</div>';
 }
 
-/**
- * The upper part of the maintenance warning box
- */
 function template_maint_warning_above()
 {
 	global $txt, $context, $scripturl;
@@ -593,9 +581,6 @@ function template_maint_warning_above()
 	</div>';
 }
 
-/**
- * The lower part of the maintenance warning box.
- */
 function template_maint_warning_below()
 {
 

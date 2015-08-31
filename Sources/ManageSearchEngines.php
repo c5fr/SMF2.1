@@ -67,8 +67,7 @@ function SearchEngines()
 /**
  * This is really just the settings page.
  *
- * @param bool $return_config Whether to return the config_vars array (used for admin search)
- * @return void|array Returns nothing or returns the $config_vars array if $return_config is true
+ * @param bool $return_config = false
  */
 function ManageSearchEngineSettings($return_config = false)
 {
@@ -325,10 +324,9 @@ function ViewSpiders()
 
 /**
  * Callback function for createList()
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort the results
- * @return array An array of information about known spiders
+ * @param int $start
+ * @param int $items_per_page
+ * @param string sort
  */
 function list_getSpiders($start, $items_per_page, $sort)
 {
@@ -352,7 +350,7 @@ function list_getSpiders($start, $items_per_page, $sort)
 
 /**
  * Callback function for createList()
- * @return int The number of known spiders
+ * @return int
  */
 function list_getNumSpiders()
 {
@@ -468,7 +466,7 @@ function EditSpider()
  * Do we think the current user is a spider?
  *
  * @todo Should this not be... you know... in a different file?
- * @return int The ID of the spider if it's known or 0 if it isn't known/isn't a spider
+ * @return int
  */
 function SpiderCheck()
 {
@@ -808,10 +806,10 @@ function SpiderLogs()
 /**
  * Callback function for createList()
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page How many items to show per page
- * @param string $sort A string indicating how to sort the results
- * @return array An array of spider log data
+ * @param int $start
+ * @param int $items_per_page
+ * @param string $sort
+ * @return array
  */
 function list_getSpiderLogs($start, $items_per_page, $sort)
 {
@@ -836,7 +834,7 @@ function list_getSpiderLogs($start, $items_per_page, $sort)
 
 /**
  * Callback function for createList()
- * @return int The number of spider log entries
+ * @return int
  */
 function list_getNumSpiderLogs()
 {
@@ -1032,10 +1030,10 @@ function SpiderStats()
  * Callback function for createList()
  * Get a list of spider stats from the log_spider table
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort the results
- * @return array An array of spider statistics info
+ * @param type $start
+ * @param type $items_per_page
+ * @param type $sort
+ * @return array
  */
 function list_getSpiderStats($start, $items_per_page, $sort)
 {
@@ -1062,7 +1060,7 @@ function list_getSpiderStats($start, $items_per_page, $sort)
  * Callback function for createList()
  * Get the number of spider stat rows from the log spider stats table
  *
- * @return int The number of rows in the log_spider_stats table
+ * @return int
  */
 function list_getNumSpiderStats()
 {

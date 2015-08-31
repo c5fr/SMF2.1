@@ -15,28 +15,30 @@ if (!defined('SMF'))
 	die('No direct access...');
 
 /**
- * Class fulltext_search
- * Used for fulltext index searching
+ * Fulltext API, used when an SQL fulltext index is used
  */
 class fulltext_search extends search_api
 {
 	/**
-	 * @var array Which words are banned
+	 * What words are banned?
+	 * @var type
 	 */
 	protected $bannedWords = array();
 
 	/**
-	 * @var int The minimum word length
+	 * What is the minimum word length?
+	 * @var type
 	 */
 	protected $min_word_length = 4;
 
 	/**
-	 * @var array Which databases support this method?
+	 * What databases support the fulltext index?
+	 * @var type
 	 */
 	protected $supported_databases = array('mysql', 'mysqli');
 
 	/**
-	 * The constructor function
+	 * fulltext_search::__construct()
 	 */
 	public function __construct()
 	{
@@ -78,7 +80,7 @@ class fulltext_search extends search_api
 	 *
 	 * What is the minimum word length full text supports?
 	 *
-	 * @return int The minimum word length
+	 * @return int
 	 */
 	protected function _getMinWordLength()
 	{

@@ -10,11 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * This template handles displaying a list
- *
- * @param string $list_id The list ID. If null, uses $context['default_list'].
- */
 function template_show_list($list_id = null)
 {
 	global $context;
@@ -164,17 +159,11 @@ function template_show_list($list_id = null)
 
 	if (isset($cur_list['javascript']))
 		echo '
-	<script>
+	<script><!-- // --><![CDATA[
 		', $cur_list['javascript'], '
-	</script>';
+	// ]]></script>';
 }
 
-/**
- * This template displays additional rows above or below the list.
- *
- * @param string $row_position The position ('top', 'bottom', etc.)
- * @param array $cur_list An array with the data for the current list
- */
 function template_additional_rows($row_position, $cur_list)
 {
 	foreach ($cur_list['additional_rows'][$row_position] as $row)
@@ -182,12 +171,6 @@ function template_additional_rows($row_position, $cur_list)
 			<div class="additional_row', empty($row['class']) ? '' : ' ' . $row['class'], '"', empty($row['style']) ? '' : ' style="' . $row['style'] . '"', '>', $row['value'], '</div>';
 }
 
-/**
- * This function creates a menu
- *
- * @param array $list_menu An array of menu data
- * @param string $direction Which direction the items should go
- */
 function template_create_list_menu($list_menu, $direction = 'top')
 {
 	global $context;

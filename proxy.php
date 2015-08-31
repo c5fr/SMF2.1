@@ -15,29 +15,11 @@
 
 define('SMF', 'proxy');
 
-/**
- * Class ProxyServer
- */
 class ProxyServer
 {
-	/**
-	 * @var bool $enabled Whether or not this is enabled
-	 */
 	protected $enabled;
-
-	/**
-	 * @var int $maxSize The maximum size for files to cache
-	 */
 	protected $maxSize;
-
-	/**
-	 * @var string $secret A secret code used for hashing
-	 */
 	protected $secret;
-
-	/**
-	 * @var string The cache directory
-	 */
 	protected $cache;
 
 	/**
@@ -62,7 +44,7 @@ class ProxyServer
 	 * Checks whether the request is valid or not
 	 *
 	 * @access public
-	 * @return bool Whether the request is valid
+	 * @return bool
 	 */
 	public function checkRequest()
 	{
@@ -125,8 +107,8 @@ class ProxyServer
 	 * Returns the request's hashed filepath
 	 *
 	 * @access public
-	 * @param string $request The request to get the path for
-	 * @return string The hashed filepath for the specified request
+	 * @param string $request
+	 * @return string
 	 */
 	protected function getCachedPath($request)
 	{
@@ -137,8 +119,8 @@ class ProxyServer
 	 * Check whether the image exists in local cache or not
 	 *
 	 * @access protected
-	 * @param string $request The image to check for in the cache
-	 * @return bool Whether or not the requested image is cached
+	 * @param string $request
+	 * @return bool
 	 */
 	protected function isCached($request)
 	{
@@ -149,8 +131,8 @@ class ProxyServer
 	 * Attempts to cache the image while validating it
 	 *
 	 * @access protected
-	 * @param string $request The image to cache/validate
-	 * @return bool Whether the specified image was cached
+	 * @param string
+	 * @return bool
 	 */
 	protected function cacheImage($request)
 	{

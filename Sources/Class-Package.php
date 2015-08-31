@@ -17,24 +17,25 @@ if (!defined('SMF'))
 	die('No direct access...');
 
 /**
- * Class xmlArray
- * Represents an XML array
+ * Class representing an xml array.  Reads in xml, allows you to access it simply.  Version 1.1.
  */
 class xmlArray
 {
 	/**
-	 * @var array Holds parsed XML results
+	 * holds xml parsed results
+	 * @var array
 	 */
 	public $array;
 
 	/**
-	 * @var int The debugging level
+	 * holds debugging level
+	 * @var int
 	 */
 	public $debug_level;
 
 	/**
 	 * holds trim level textual data
-	 * @var bool Holds trim level textual data
+	 * @var bool
 	 */
 	public $trim;
 
@@ -43,9 +44,9 @@ class xmlArray
 	 * Example use:
 	 *  $xml = new xmlArray(file('data.xml'));
 	 *
-	 * @param string $data The xml data or an array of, unless is_clone is true.
-	 * @param bool $auto_trim Used to automatically trim textual data.
-	 * @param int $level The debug level. Specifies whether notices should be generated for missing elements and attributes.
+	 * @param string $data the xml data or an array of, unless is_clone is true.
+	 * @param bool $auto_trim default false, used to automatically trim textual data.
+	 * @param int $level default null, the debug level, specifies whether notices should be generated for missing elements and attributes.
 	 * @param bool $is_clone default false. If is_clone is true, the  xmlArray is cloned from another - used internally only.
 	 */
 	public function __construct($data, $auto_trim = false, $level = null, $is_clone = false)
@@ -92,8 +93,8 @@ class xmlArray
 	 * unless get_elements is true.
 	 * Example use:
 	 *  $data = $xml->fetch('html/head/title');
-	 * @param string $path The path to the element to fetch
-	 * @param bool $get_elements Whether to include elements
+	 * @param string $path - the path to the element to fetch
+	 * @param bool $get_elements - whether to include elements
 	 * @return string The value or attribute of the specified element
 	 */
 	public function fetch($path, $get_elements = false)
@@ -131,8 +132,8 @@ class xmlArray
 	 * or return_set is true.
 	 * Example use:
 	 *  $element = $xml->path('html/body');
-	 * @param $path string The path to the element to get
-	 * @param $return_full bool Whether to return the full result set
+	 * @param $path string - the path to the element to get
+	 * @param $return_full bool - always return full result set
 	 * @return xmlArray, a new xmlArray.
 	 */
 	public function path($path, $return_full = false)
@@ -195,8 +196,8 @@ class xmlArray
 	 * Example use,
 	 *  echo $xml->exists('html/body') ? 'y' : 'n';
 	 *
-	 * @param string $path The path to the element to get.
-	 * @return boolean Whether the specified path exists
+	 * @param string $path - the path to the element to get.
+	 * @return boolean
 	 */
 	public function exists($path)
 	{
@@ -232,8 +233,8 @@ class xmlArray
 	 * Count the number of occurrences of a path.
 	 * Example use:
 	 *  echo $xml->count('html/head/meta');
-	 * @param string $path The path to search for.
-	 * @return int The number of elements the path matches.
+	 * @param string $path - the path to search for.
+	 * @return int, the number of elements the path matches.
 	 */
 	public function count($path)
 	{
@@ -257,8 +258,8 @@ class xmlArray
 	 * of elements, an array of xmlArray's is returned for use with foreach.
 	 * Example use:
 	 *  foreach ($xml->set('html/body/p') as $p)
-	 * @param $path string The path to search for.
-	 * @return array An array of xmlArray objects
+	 * @param $path string - the path to search for.
+	 * @return array, an array of xmlArray objects
 	 */
 	public function set($path)
 	{
@@ -286,8 +287,8 @@ class xmlArray
 	 * Create an xml file from an xmlArray, the specified path if any.
 	 * Example use:
 	 *  echo $this->create_xml();
-	 * @param string $path The path to the element. (optional)
-	 * @return string Xml-formatted string.
+	 * @param string $path - the path to the element. (optional)
+	 * @return string, xml-formatted string.
 	 */
 	public function create_xml($path = null)
 	{
@@ -315,7 +316,7 @@ class xmlArray
 	 * Example use:
 	 *  print_r($xml->to_array());
 	 *
-	 * @param string $path The path to output.
+	 * @param string $path the path to output.
 	 * @return array An array of XML data
 	 */
 	public function to_array($path = null)
@@ -341,7 +342,7 @@ class xmlArray
 	/**
 	 * Parse data into an array. (privately used...)
 	 *
-	 * @param string $data The data to parse
+	 * @param string $data to parse
 	 * @return array The parsed array
 	 */
 	protected function _parse($data)
@@ -492,7 +493,6 @@ class xmlArray
 	 *
 	 * @param array $array An array of element data
 	 * @param null|int $indent How many levels to indent the elements (null = no indent)
-	 * @return string The formatted XML
 	 */
 	protected function _xml($array, $indent)
 	{
@@ -520,7 +520,7 @@ class xmlArray
 		$inside_elements = false;
 		$output_el = '';
 
-		// Run through and recursively output all the elements or attrbutes inside this.
+		// Run through and recurively output all the elements or attrbutes inside this.
 		foreach ($array as $k => $v)
 		{
 			if (substr($k, 0, 1) == '@')
@@ -544,8 +544,8 @@ class xmlArray
 	/**
 	 * Return an element as an array
 	 *
-	 * @param array $array An array of data
-	 * @return string|array A string with the element's value or an array of element data
+	 * @param array $array
+	 * @return string|array A string with the element's value or an array of element datas
 	 */
 	protected function _array($array)
 	{
@@ -609,7 +609,7 @@ class xmlArray
 	/**
 	 * Turn the CDATAs back to normal text.
 	 *
-	 * @param string $data The data with CDATA tags
+	 * @param string $data
 	 * @return string The transformed data
 	 */
 	protected function _from_cdata($data)
@@ -629,7 +629,7 @@ class xmlArray
 	/**
 	 * Given an array, return the text from that array. (recursive and privately used.)
 	 *
-	 * @param array $array An aray of data
+	 * @param array $array
 	 * @return string The text from the array
 	 */
 	protected function _fetch($array)
@@ -660,10 +660,10 @@ class xmlArray
 	/**
 	 * Get a specific array by path, one level down. (privately used...)
 	 *
-	 * @param array $array An array of data
-	 * @param string $path The path
-	 * @param int $level How far deep into the array we should go
-	 * @param bool $no_error Whether or not to ignore errors
+	 * @param array $array
+	 * @param string $path
+	 * @param int $level
+	 * @param bool $no_error
 	 * @return string|array The specified array (or the contents of said array if there's only one result)
 	 */
 	protected function _path($array, $path, $level, $no_error = false)
@@ -722,40 +722,43 @@ class xmlArray
 }
 
 /**
- * Class ftp_connection
  * Simple FTP protocol implementation.
  *
- * @see http://www.faqs.org/rfcs/rfc959.html
+ * http://www.faqs.org/rfcs/rfc959.html
  */
 class ftp_connection
 {
 	/**
-	 * @var string Holds the connection response
+	 * holds the connection response
+	 * @var type
 	 */
 	public $connection;
 
 	/**
-	 * @var string Holds any errors
+	 * holds any errors
+	 * @var string
 	 */
 	public $error;
 
 	/**
-	 * @var string Holds the last message from the server
+	 * holds last message from the server
+	 * @var string
 	 */
 	public $last_message;
 
 	/**
-	 * @var boolean Whether or not this is a passive connection
+	 * Passive connection
+	 * @var boolean
 	 */
 	public $pasv;
 
 	/**
 	 * Create a new FTP connection...
 	 *
-	 * @param string $ftp_server The server to connect to
-	 * @param int $ftp_port The port to connect to
-	 * @param string $ftp_user The username
-	 * @param string $ftp_pass The password
+	 * @param string $ftp_server
+	 * @param int $ftp_port
+	 * @param string $ftp_user
+	 * @param string $ftp_pass
 	 */
 	public function __construct($ftp_server, $ftp_port = 21, $ftp_user = 'anonymous', $ftp_pass = 'ftpclient@simplemachines.org')
 	{
@@ -771,10 +774,10 @@ class ftp_connection
 	/**
 	 * Connects to a server
 	 *
-	 * @param string $ftp_server The address of the server
-	 * @param int $ftp_port The port
-	 * @param string $ftp_user The username
-	 * @param string $ftp_pass The password
+	 * @param string $ftp_server
+	 * @param int $ftp_port
+	 * @param string $ftp_user
+	 * @param string $ftp_pass
 	 */
 	public function connect($ftp_server, $ftp_port = 21, $ftp_user = 'anonymous', $ftp_pass = 'ftpclient@simplemachines.org')
 	{
@@ -999,7 +1002,7 @@ class ftp_connection
 	 * Generates a direcotry listing for the current directory
 	 *
 	 * @param string $ftp_path The path to the directory
-	 * @param bool $search Whether or not to get a recursive directory listing
+	 * @param type $search Whether or not to get a recursive directory listing
 	 * @return string|boolean The results of the command or false if unsuccessful
 	 */
 	public function list_dir($ftp_path = '', $search = false)
@@ -1045,7 +1048,7 @@ class ftp_connection
 	 *
 	 * @param string $file The name of a file
 	 * @param string $listing A directory listing or null to generate one
-	 * @return string|boolean The name of the file or false if it wasn't found
+	 * @return string|boolean
 	 */
 	public function locate($file, $listing = null)
 	{

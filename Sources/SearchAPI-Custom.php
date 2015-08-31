@@ -15,33 +15,36 @@ if (!defined('SMF'))
 	die('No direct access...');
 
 /**
- * Used for the "custom search index" option
- * Class custom_search
+ * Custom Search API class .. used when custom SMF index is used
  */
 class custom_search extends search_api
 {
 	/**
-	 * @var array Index settings
+	 * Index Settings
+	 * @var type
 	 */
 	protected $indexSettings = array();
 
 	/**
-	 * @var array An array of banned words
+	 * What words are banned?
+	 * @var type
 	 */
 	protected $bannedWords = array();
 
 	/**
-	 * @var int|null Minimum word length (null for no minimum)
+	 * What is the minimum word length?
+	 * @var type
 	 */
 	protected $min_word_length = null;
 
 	/**
-	 * @var array Which databases support this method
+	 * What databases support the custom index?
+	 * @var type
 	 */
 	protected $supported_databases = array('mysql', 'mysqli', 'postgresql');
 
 	/**
-	 * Constructor function
+	 * constructor function
 	 */
 	public function __construct()
 	{

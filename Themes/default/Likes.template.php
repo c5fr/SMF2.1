@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * This shows the popup that shows who likes a particular post.
- */
 function template_popup()
 {
 	global $context, $settings, $txt, $modSettings;
@@ -24,7 +21,7 @@ function template_popup()
 		<meta charset="', $context['character_set'], '">
 		<meta name="robots" content="noindex">
 		<title>', $context['page_title'], '</title>
-		<link rel="stylesheet" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
 	<body id="likes_popup">
@@ -53,9 +50,6 @@ function template_popup()
 </html>';
 }
 
-/**
- * Display a like button and info about how many people liked something
- */
 function template_like()
 {
 	global $context, $scripturl, $txt;
@@ -89,9 +83,6 @@ function template_like()
 	</ul>';
 }
 
-/**
- * A generic template that outputs any data passed to it...
- */
 function template_generic()
 {
 	global $context;

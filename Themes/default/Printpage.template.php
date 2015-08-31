@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * The header. Defines the look and layout of the page as well as a form for choosing print options.
- */
 function template_print_above()
 {
 	global $context, $txt, $topic, $scripturl;
@@ -27,7 +24,7 @@ function template_print_above()
 		<meta name="robots" content="noindex">
 		<link rel="canonical" href="', $context['canonical_url'], '">
 		<title>', $txt['print_page'], ' - ', $context['topic_subject'], '</title>
-		<style>
+		<style type="text/css">
 			body, a {
 				color: #000;
 				background: #fff;
@@ -122,9 +119,6 @@ function template_print_above()
 		<div id="posts">';
 }
 
-/**
- * The main page. This shows the relevent info in a printer-friendly format
- */
 function template_main()
 {
 	global $context, $options, $txt, $scripturl, $topic;
@@ -172,9 +166,6 @@ function template_main()
 	}
 }
 
-/**
- * The footer.
- */
 function template_print_below()
 {
 	global $topic, $txt, $scripturl;

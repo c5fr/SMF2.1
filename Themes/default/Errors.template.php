@@ -16,9 +16,7 @@
 	$context['error_message'].
 */
 
-/**
- * THis displays a fatal error message
- */
+// Show an error message.....
 function template_fatal_error()
 {
 	global $context, $txt;
@@ -51,9 +49,6 @@ function template_fatal_error()
 	}
 }
 
-/**
- * This template handles the error log in the admin center.
- */
 function template_error_log()
 {
 	global $context, $settings, $scripturl, $txt;
@@ -203,9 +198,6 @@ function template_error_log()
 		</form>';
 }
 
-/**
- * This template shows a snippet of code from a file and highlights which line caused the error.
- */
 function template_show_file()
 {
 	global $context, $settings, $modSettings;
@@ -215,7 +207,7 @@ function template_show_file()
 	<head>
 		<meta charset="', $context['character_set'], '">
 		<title>', $context['file_data']['file'], '</title>
-		<link rel="stylesheet" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
 	</head>
 	<body>
 		<table class="errorfile_table">';
@@ -235,9 +227,6 @@ function template_show_file()
 </html>';
 }
 
-/**
- * This template handles showing attachment-related errors
- */
 function template_attachment_errors()
 {
 	global $context, $scripturl, $txt;

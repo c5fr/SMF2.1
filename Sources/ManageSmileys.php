@@ -107,10 +107,9 @@ function ManageSmileys()
 }
 
 /**
- * Handles modifying smileys settings.
+ * Allows to modify smileys settings.
  *
- * @param bool $return_config Whether or not to return the config_vars array (used for admin search)
- * @return void|array Returns nothing or returns the $config_vars array if $return_config is true
+ * @param bool $return_config = false
  */
 function EditSmileySettings($return_config = false)
 {
@@ -468,10 +467,6 @@ function EditSmileySets()
 		),
 		'additional_rows' => array(
 			array(
-				'position' => 'above_table_headers',
-				'value' => '<input type="hidden" name="smiley_save"><input type="submit" name="delete" value="' . $txt['smiley_sets_delete'] . '" data-confirm="' . $txt['smiley_sets_confirm'] . '" class="button_submit you_sure"> <a class="button_link" href="' . $scripturl . '?action=admin;area=smileys;sa=modifyset' . '">' . $txt['smiley_sets_add'] . '</a> ',
-			),
-			array(
 				'position' => 'below_table_data',
 				'value' => '<input type="hidden" name="smiley_save"><input type="submit" name="delete" value="' . $txt['smiley_sets_delete'] . '" data-confirm="' . $txt['smiley_sets_confirm'] . '" class="button_submit you_sure"> <a class="button_link" href="' . $scripturl . '?action=admin;area=smileys;sa=modifyset' . '">' . $txt['smiley_sets_add'] . '</a> ',
 			),
@@ -486,10 +481,9 @@ function EditSmileySets()
  * Callback function for createList().
  * @todo to be moved to Subs-Smileys?
  *
- * @param int $start The item to start with (not used here)
- * @param int $items_per_page The number of items to show per page (not used here)
- * @param string $sort A string indicating how to sort the results
- * @return array An array of info about the smiley sets
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
  */
 function list_getSmileySets($start, $items_per_page, $sort)
 {
@@ -533,7 +527,6 @@ function list_getSmileySets($start, $items_per_page, $sort)
 /**
  * Callback function for createList().
  * @todo to be moved to Subs-Smileys?
- * @return int The total number of known smiley sets
  */
 function list_getNumSmileySets()
 {
@@ -1206,10 +1199,9 @@ function EditSmileys()
 /**
  * Callback function for createList().
  *
- * @param int $start The item to start with (not used here)
- * @param int $items_per_page The number of items to show per page (not used here)
- * @param string $sort A string indicating how to sort the results
- * @return array An array of info about the smileys
+ * @param unknown_type $start
+ * @param unknown_type $items_per_page
+ * @param unknown_type $sort
  */
 function list_getSmileys($start, $items_per_page, $sort)
 {
@@ -1232,7 +1224,6 @@ function list_getSmileys($start, $items_per_page, $sort)
 
 /**
  * Callback function for createList().
- * @return int The number of smileys
  */
 function list_getNumSmileys()
 {
@@ -1643,7 +1634,7 @@ function InstallSmileySet()
 /**
  * A function to import new smileys from an existing directory into the database.
  *
- * @param string $smileyPath The path to the directory to import smileys from
+ * @param string $smileyPath
  */
 function ImportSmileys($smileyPath)
 {
@@ -1710,7 +1701,7 @@ function ImportSmileys($smileyPath)
 }
 
 /**
- * Handles editing message icons
+ * Allows to edit the message icons.
  */
 function EditMessageIcons()
 {
@@ -1973,10 +1964,9 @@ function EditMessageIcons()
 /**
  * Callback function for createList().
  *
- * @param int $start The item to start with (not used here)
- * @param int $items_per_page The number of items to display per page (not used here)
- * @param string $sort A string indicating how to sort the items (not used here)
- * @return array An array of information about message icons
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
  */
 function list_getMessageIcons($start, $items_per_page, $sort)
 {

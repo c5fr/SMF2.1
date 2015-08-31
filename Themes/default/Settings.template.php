@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * This pseudo-template defines all the theme options
- */
 function template_options()
 {
 	global $context, $txt;
@@ -130,9 +127,6 @@ function template_options()
 	);
 }
 
-/**
- * This pseudo-template defines all the available theme settings (but not their actual values)
- */
 function template_settings()
 {
 	global $context, $scripturl, $txt;
@@ -155,6 +149,13 @@ function template_settings()
 			'label' => $txt['smileys_default_set_for_theme'],
 			'options' => $context['smiley_sets'],
 			'type' => 'text',
+		),
+		array(
+			'id' => 'forum_width',
+			'label' => $txt['forum_width'],
+			'description' => $txt['forum_width_desc'],
+			'type' => 'text',
+			'size' => 8,
 		),
 	'',
 		array(

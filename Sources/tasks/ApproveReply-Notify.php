@@ -12,14 +12,8 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Class ApproveReply_Notify_Background
- */
 class ApproveReply_Notify_Background extends SMF_BackgroundTask
 {
-	/**
-	 * @return bool
-	 */
 	public function execute()
 	{
 		global $smcFunc, $sourcedir, $scripturl, $modSettings, $language;
@@ -50,7 +44,7 @@ class ApproveReply_Notify_Background extends SMF_BackgroundTask
 		$smcFunc['db_free_result']($request);
 
 		require_once($sourcedir . '/Subs-Notify.php');
-		$prefs = getNotifyPrefs($members, 'unapproved_reply', true);
+		$prefs = getNotifyPrefs($members, 'unapproved_reply');
 		foreach ($watched as $member => $data)
 		{
 			$pref = !empty($prefs[$member]['unapproved_reply']) ? $prefs[$member]['unapproved_reply'] : 0;

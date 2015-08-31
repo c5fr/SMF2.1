@@ -110,7 +110,7 @@ function template_admin()
 
 	// This sets the announcements and current versions themselves ;).
 	echo '
-					<script>
+					<script><!-- // --><![CDATA[
 						var oAdminIndex = new smf_AdminIndex({
 							sSelf: \'oAdminCenter\',
 
@@ -150,7 +150,7 @@ function template_admin()
 							sUpdateNotificationLink: smf_scripturl + ', JavaScriptEscape('?action=admin;area=packages;pgdownload;auto;package=%package%;' . $context['session_var'] . '=' . $context['session_id']), '
 
 						});
-					</script>';
+					// ]]></script>';
 }
 
 /**
@@ -253,7 +253,7 @@ function template_credits()
 
 	// This makes all the support information available to the support script...
 	echo '
-						<script>
+						<script><!-- // --><![CDATA[
 							var smfSupportVersions = {};
 
 							smfSupportVersions.forum = "', $context['forum_version'], '";';
@@ -265,13 +265,13 @@ function template_credits()
 
 	// Now we just have to include the script and wait ;).
 	echo '
-						</script>
+						// ]]></script>
 						<script src="', $scripturl, '?action=viewsmfile;filename=current-version.js"></script>
 						<script src="', $scripturl, '?action=viewsmfile;filename=latest-news.js"></script>';
 
 	// This sets the latest support stuff.
 	echo '
-						<script>
+						<script><!-- // --><![CDATA[
 							function smfCurrentVersion()
 							{
 								var smfVer, yourVer;
@@ -289,7 +289,7 @@ function template_credits()
 									setInnerHTML(yourVer, "<span class=\"alert\">" + currentVersion + "</span>");
 							}
 							addLoadEvent(smfCurrentVersion)
-						</script>';
+						// ]]></script>';
 }
 
 /**
@@ -508,10 +508,10 @@ function template_view_versions()
 											<a href="#" id="Tasks-link">', $txt['dvc_tasks'] ,'</a>
 										</td>
 										<td class="quarter_table">
-											<em id="yourTasks">??</em>
+											<em id="yourTemplates">??</em>
 										</td>
 										<td class="quarter_table">
-											<em id="currentTasks">??</em>
+											<em id="currentTemplates">??</em>
 										</td>
 									</tr>
 								</tbody>
@@ -527,10 +527,10 @@ function template_view_versions()
 											', $filename, '
 										</td>
 										<td class="quarter_table">
-											<em id="yourTasks', $filename, '">', $version, '</em>
+											<em id="yourTemplates', $filename, '">', $version, '</em>
 										</td>
 										<td class="quarter_table">
-											<em id="currentTasks', $filename, '">??</em>
+											<em id="currentTemplates', $filename, '">??</em>
 										</td>
 									</tr>';
 
@@ -549,7 +549,7 @@ function template_view_versions()
 	   file categories. (sources, languages, and templates.) */
 	echo '
 						<script src="', $scripturl, '?action=viewsmfile;filename=detailed-version.js"></script>
-						<script>
+						<script><!-- // --><![CDATA[
 							var oViewVersions = new smf_ViewVersions({
 								aKnownLanguages: [
 									\'.', implode('\',
@@ -563,13 +563,11 @@ function template_view_versions()
 									Tasks: \'Tasks\'
 								}
 							});
-						</script>';
+						// ]]></script>';
 
 }
 
-/**
- * Form for stopping people using naughty words, etc.
- */
+// Form for stopping people using naughty words, etc.
 function template_edit_censored()
 {
 	global $context, $scripturl, $txt, $modSettings;
@@ -605,9 +603,9 @@ function template_edit_censored()
 								<div id="moreCensoredWords"></div><div class="block" style="display: none;" id="moreCensoredWords_link">
 									<a class="button_link" href="#;" onclick="addNewWord(); return false;">', $txt['censor_clickadd'], '</a><br>
 								</div>
-								<script>
+								<script><!-- // --><![CDATA[
 									document.getElementById("moreCensoredWords_link").style.display = "";
-								</script>
+								// ]]></script>
 								<hr width="100%" size="1" class="hrcolor clear">
 								<dl class="settings">
 									<dt>
@@ -653,9 +651,7 @@ function template_edit_censored()
 					</div>';
 }
 
-/**
- * This is the page shown when we've temporarily paused things such as during maintenance tasks, sending newsletters, etc.
- */
+// Maintenance is a lovely thing, isn't it?
 function template_not_done()
 {
 	global $context, $txt, $scripturl;
@@ -691,7 +687,7 @@ function template_not_done()
 							</form>
 						</div>
 					</div>
-					<script>
+					<script><!-- // --><![CDATA[
 						var countdown = ', $context['continue_countdown'], ';
 						doAutoSubmit();
 
@@ -707,12 +703,10 @@ function template_not_done()
 
 							setTimeout("doAutoSubmit();", 1000);
 						}
-					</script>';
+					// ]]></script>';
 }
 
-/**
- * Template for showing settings (Of any kind really!)
- */
+// Template for showing settings (Of any kind really!)
 function template_show_settings()
 {
 	global $context, $txt, $settings, $scripturl;
@@ -726,7 +720,7 @@ function template_show_settings()
 
 	if (!empty($context['settings_pre_javascript']))
 		echo '
-					<script>', $context['settings_pre_javascript'], '</script>';
+					<script><!-- // --><![CDATA[', $context['settings_pre_javascript'], '// ]]></script>';
 
 	if (!empty($context['settings_insert_above']))
 		echo $context['settings_insert_above'];
@@ -993,9 +987,9 @@ function template_show_settings()
 
 	if (!empty($context['settings_post_javascript']))
 		echo '
-					<script>
+					<script><!-- // --><![CDATA[
 					', $context['settings_post_javascript'], '
-					</script>';
+					// ]]></script>';
 
 	if (!empty($context['settings_insert_below']))
 		echo $context['settings_insert_below'];
@@ -1014,9 +1008,7 @@ function template_show_settings()
 	', true);
 }
 
-/**
- * Template for showing custom profile fields.
- */
+// Template for showing custom profile fields.
 function template_show_custom_profile()
 {
 	global $context, $txt;
@@ -1029,12 +1021,12 @@ function template_show_custom_profile()
 	template_show_list('standard_profile_fields');
 
 	echo '
-					<script>
+					<script><!-- // --><![CDATA[
 						var iNumChecks = document.forms.standardProfileFields.length;
 						for (var i = 0; i < iNumChecks; i++)
 							if (document.forms.standardProfileFields[i].id.indexOf(\'reg_\') == 0)
 								document.forms.standardProfileFields[i].disabled = document.forms.standardProfileFields[i].disabled || !document.getElementById(\'active_\' + document.forms.standardProfileFields[i].id.substr(4)).checked;
-					</script><br>';
+					// ]]></script><br>';
 
 	// Custom fields.
 	template_show_list('custom_profile_fields');
@@ -1047,9 +1039,9 @@ function template_edit_profile_field()
 
 	// All the javascript for this page - quite a bit in script.js!
 	echo '
-					<script>
+					<script><!-- // --><![CDATA[
 						var startOptID = ', count($context['field']['options']), ';
-					</script>';
+					// ]]></script>';
 
 	// any errors messages to show?
 	if (isset($_GET['msg']))
@@ -1266,14 +1258,12 @@ function template_edit_profile_field()
 
 	// Get the javascript bits right!
 	echo '
-					<script>
+					<script><!-- // --><![CDATA[
 						updateInputBoxes();
-					</script>';
+					// ]]></script>';
 }
 
-/**
- * Results page for an admin search.
- */
+// Results page for an admin search.
 function template_admin_search_results()
 {
 	global $context, $txt, $settings, $scripturl;
@@ -1340,9 +1330,7 @@ function template_admin_search_results()
 					</div>';
 }
 
-/**
- * This little beauty shows questions and answer from the captcha type feature.
- */
+// This little beauty shows questions and answer from the captcha type feature.
 function template_callback_question_answer_list()
 {
 	global $txt, $context;
@@ -1391,9 +1379,7 @@ function template_callback_question_answer_list()
 	}
 }
 
-/**
- * Repairing boards.
- */
+// Repairing boards.
 function template_repair_boards()
 {
 	global $context, $txt, $scripturl;
@@ -1469,7 +1455,7 @@ function template_repair_boards()
 	if (!empty($context['redirect_to_recount']))
 	{
 		echo '
-					<script>
+					<script><!-- // --><![CDATA[
 						var countdown = 5;
 						doAutoSubmit();
 
@@ -1485,13 +1471,11 @@ function template_repair_boards()
 
 							setTimeout("doAutoSubmit();", 1000);
 						}
-					</script>';
+					// ]]></script>';
 	}
 }
 
-/**
- * Retrieves info from the php_info function, scrubs and preps it for display
- */
+// Retrieves info from the php_info function, scrubs and preps it for display
 function template_php_info()
 {
 	global $context, $txt;
@@ -1570,16 +1554,10 @@ function template_php_info()
 					</div>';
 }
 
-/**
- *
- */
 function template_clean_cache_button_above()
 {
 }
 
-/**
- * Content shown below the clean cache button?
- */
 function template_clean_cache_button_below()
 {
 	global $txt, $scripturl, $context;
@@ -1598,9 +1576,6 @@ function template_clean_cache_button_below()
 					</div>';
 }
 
-/**
- * This shows the admin search form
- */
 function template_admin_quick_search()
 {
 	global $context, $txt, $scripturl;

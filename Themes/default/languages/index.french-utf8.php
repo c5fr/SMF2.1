@@ -71,8 +71,7 @@ $txt['modify']      = 'Modifier';
 $txt['forum_index'] = '%1$s - Accueil';
 $txt['members']     = 'Membres';
 $txt['board_name']  = 'Nom de la section';
-//TOFIXLI
-$txt['posts'] = 'Message';
+$txt['posts']       = 'Messages';
 
 $txt['member_postcount'] = 'Messages';
 $txt['no_subject']       = '(Pas de titre)';
@@ -129,22 +128,20 @@ $txt['page']          = 'Page';
 $txt['prev']          = 'Page précédente';
 $txt['next']          = 'Page suivante';
 
-$txt['lock_unlock']   = '(Dé)bloquer le sujet';
-$txt['post']          = 'Soumettre';
-$txt['error_occured'] = 'Une erreur s\'est produite&nbsp;!';
-$txt['at']            = 'à';
-$txt['by']            = 'par';
-$txt['logout']        = 'Déconnexion';
-$txt['started_by']    = 'Démarré par';
-//TOFIXLI
+$txt['lock_unlock']            = '(Dé)bloquer le sujet';
+$txt['post']                   = 'Soumettre';
+$txt['error_occured']          = 'Une erreur s\'est produite&nbsp;!';
+$txt['at']                     = 'à';
+$txt['by']                     = 'par';
+$txt['logout']                 = 'Déconnexion';
+$txt['started_by']             = 'Démarré par';
 $txt['topic_started_by']       = 'Démarré par <strong>%1$s</strong> dans <em>%2$s</em>';
-$txt['replies']                = 'Réponse';
+$txt['replies']                = 'Réponses';
 $txt['last_post']              = 'Dernier message';
 $txt['first_post']             = 'Premier message';
 $txt['last_poster']            = 'Dernier message par';
-$txt['last_post_message']      = 'Dernier message : ' . '%3$s' . '<span
-class="postby"><strong>%2$s</strong> par <strong>%1$s</strong></span> ';
-$txt['last_post_topic']        = '%1$s<br>Par <strong>%2$s</strong>';
+$txt['last_post_message']      = '<strong>Dernier message: </strong>%3$s<span class="postby">%2$s par %1$s</span> ';
+$txt['last_post_topic']        = '%1$s<br>by %2$s';
 $txt['post_by_member']         = '<strong>%1$s</strong> by <strong>%2$s</strong><br>';
 $txt['boardindex_total_posts'] = '%1$s Messages dans %2$s Sujets par %3$s Membres';
 $txt['show']                   = 'Afficher';
@@ -303,7 +300,7 @@ $txt['from']               = 'De';
 $txt['check_new_messages'] = 'Vérifier les nouveaux messages';
 $txt['to']                 = 'à';
 
-$txt['board_topics']   = 'Sujet';
+$txt['board_topics']   = 'Sujets';
 $txt['members_title']  = 'Membres';
 $txt['members_list']   = 'Liste des membres';
 $txt['new_posts']      = 'Nouveaux messages';

@@ -11,10 +11,10 @@ define( 'SMF_INTEGRATION_SETTINGS', serialize( [
 $ssi_theme     = 1;
 $forum_version = 'SMF 2.1 Beta 2';
 // If SSI.php is in the same place as this file, this is being run standalone.
-if ( file_exists( dirname( __FILE__ ) . '/SSI.php' ) ) {
-	require_once( dirname( __FILE__ ) . '/SSI.php' );
-} elseif ( file_exists( '../SSI.php' ) ) {
-	require_once( '../SSI.php' );
+if ( file_exists( dirname( __FILE__ ) . '../../SSI.php' ) ) {
+	require_once( dirname( __FILE__ ) . '../../SSI.php' );
+} elseif ( file_exists( '../../SSI.php' ) ) {
+	require_once( '../../SSI.php' );
 } // Hmm... no SSI.php?
 else {
 	die( '<b>Error:</b> Cannot find SSI - please verify you put this in the same place as SMF\'s index.php.' );
@@ -23,7 +23,7 @@ else {
 /**
  * Change false to true if you want to avoid the admin check.
  */
-$context['override_security'] = FALSE;
+//$context['override_security'] = FALSE;
 //
 //echo 'oki';
 //echo '<center><h5>Welcome '.$MemberGroup.' !</h5></center>';
@@ -76,8 +76,8 @@ function ac7_loadLanguage() {
 	$flang = 'ac7_english';
 	if ( ! empty( $user_info['language'] ) ) {
 		$flang = 'ac7_' . preg_replace( '[-]', '_', $user_info['language'] );
-		var_dump( $user_info['language'] );
-		echo '<h1>flang: ' . $flang . '</h1>';
+		//var_dump( $user_info['language'] );
+		//echo '<h1>flang: ' . $flang . '</h1>';
 		if ( function_exists( $flang ) && $flang != 'ac7_english' ) {
 			return $flang();
 		}

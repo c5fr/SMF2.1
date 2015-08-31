@@ -12,7 +12,7 @@
  *
  * @version 2.1 Beta 2
  */
-
+$sg='PC-Li';
 ########## Maintenance ##########
 /**
  * The maintenance "mode"
@@ -206,4 +206,3 @@ if (!file_exists($cachedir) && file_exists($boarddir . '/cache'))
 	$cachedir = $boarddir . '/cache';
 
 $db_character_set = 'utf8';
-?>

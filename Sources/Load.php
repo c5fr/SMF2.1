@@ -18,6 +18,7 @@ if (!defined('SMF'))
 
 /**
  * Load the $modSettings array.
+ *
  */
 function reloadSettings()
 {
@@ -66,53 +67,14 @@ function reloadSettings()
 
 	// Set a list of common functions.
 	$ent_list = empty($modSettings['disableEntityCheck']) ? '&(#\d{1,7}|quot|amp|lt|gt|nbsp);' : '&(#021|quot|amp|lt|gt|nbsp);';
-	$ent_check = empty($modSettings['disableEntityCheck']) ? function ($string)
+	$ent_check = empty($modSettings['disableEntityCheck']) ? function($string)
 		{
 			$string = preg_replace_callback('~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~', 'entity_fix__callback', $string);
 			return $string;
-		} : function ($string)
+		} : function($string)
 		{
 			return $string;
 		};
-	$fix_utf8mb4 = function ($string) use ($utf8)
-	{
-		if (!$utf8)
-			return $string;
-
-		$i = 0;
-		$len = strlen($string);
-		$new_string = '';
-		while ($i < $len)
-		{
-			$ord = ord($string[$i]);
-			if ($ord < 128)
-			{
-				$new_string .= $string[$i];
-				$i++;
-			}
-			elseif ($ord < 224)
-			{
-				$new_string .= $string[$i] . $string[$i+1];
-				$i += 2;
-			}
-			elseif ($ord < 240)
-			{
-				$new_string .= $string[$i] . $string[$i+1] . $string[$i+2];
-				$i += 3;
-			}
-			elseif ($ord < 248)
-			{
-				// Magic happens.
-				$val = (ord($string[$i]) & 0x07) << 18;
-				$val += (ord($string[$i+1]) & 0x3F) << 12;
-				$val += (ord($string[$i+2]) & 0x3F) << 6;
-				$val += (ord($string[$i+3]) & 0x3F);
-				$new_string .= '&#' . $val . ';';
-				$i += 4;
-			}
-		}
-		return $new_string;
-	};
 
 	// Preg_replace space characters depend on the character set in use
 	$space_chars = $utf8 ? '\x{A0}\x{AD}\x{2000}-\x{200F}\x{201F}\x{202F}\x{3000}\x{FEFF}' : '\x00-\x08\x0B\x0C\x0E-\x19\xA0';
@@ -124,9 +86,9 @@ function reloadSettings()
 			$num = $string[0] === 'x' ? hexdec(substr($string, 1)) : (int) $string;
 			return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) || $num === 0x202E || $num === 0x202D ? '' : '&#' . $num . ';';
 		},
-		'htmlspecialchars' => function ($string, $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1') use ($ent_check, $utf8, $fix_utf8mb4)
+		'htmlspecialchars' => function ($string, $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1') use ($ent_check, $utf8)
 		{
-			return $fix_utf8mb4($ent_check(htmlspecialchars($string, $quote_style, $utf8 ? 'UTF-8' : $charset)));
+			return $ent_check(htmlspecialchars($string, $quote_style, $utf8 ? 'UTF-8' : $charset));
 		},
 		'htmltrim' => function ($string) use ($utf8, $space_chars, $ent_check)
 		{
@@ -287,7 +249,7 @@ function reloadSettings()
 	$context['server']['needs_login_fix'] = $context['server']['is_cgi'] && $context['server']['is_iis'];
 
 	// Define a list of icons used across multiple places.
-	$context['stable_icons'] = array('xx', 'thumbup', 'thumbdown', 'exclamation', 'question', 'lamp', 'smiley', 'angry', 'cheesy', 'grin', 'sad', 'wink', 'poll', 'moved', 'recycled', 'clip');
+	$context['stable_icons'] = array('xx', 'thumbup', 'thumbdown', 'exclamation', 'question', 'lamp', 'smiley', 'angry', 'cheesy', 'grin', 'sad', 'wink', 'poll', 'moved', 'recycled', 'wireless', 'clip');
 
 	// Define an array for custom profile fields placements.
 	$context['cust_profile_fields_placement'] = array(
@@ -305,9 +267,6 @@ function reloadSettings()
 		'<img>',
 		'<div>',
 	);
-
-	// Define a list of allowed tags for descriptions.
-	$context['description_allowed_tags'] = array('abbr', 'anchor', 'center', 'color', 'font', 'hr', 'i', 'iurl', 'left', 'li', 'list', 'ltr', 'pre', 'right', 's', 'sub', 'sup', 'table', 'td', 'tr', 'u', 'url',);
 
 	// Get an error count, if necessary
 	if (!isset($context['num_errors']))
@@ -586,13 +545,8 @@ function loadUserSettings()
 		// Expire the 2FA cookie
 		if (isset($_COOKIE[$cookiename . '_tfa']) && empty($context['tfa_member']))
 		{
-			list ($id, $user, $exp, $state, $preserve) = @unserialize($_COOKIE[$cookiename . '_tfa']);
-
-			if (!$preserve || time() > $exp)
-			{
-				$_COOKIE[$cookiename . '_tfa'] = '';
-				setTFACookie(-3600, 0, '');
-			}
+			$_COOKIE[$cookiename . '_tfa'] = '';
+			setTFACookie(-3600, 0, '');
 		}
 
 		// Create a login token if it doesn't exist yet.
@@ -1000,6 +954,7 @@ function loadBoard()
 
 /**
  * Load this user's permissions.
+ *
  */
 function loadPermissions()
 {
@@ -1185,7 +1140,8 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 		case 'profile':
 			$select_columns .= ', mem.additional_groups, mem.id_theme, mem.pm_ignore_list, mem.pm_receive_from,
 			mem.time_format, mem.timezone, mem.secret_question, mem.smiley_set, mem.tfa_secret,
-			mem.total_time_logged_in, lo.url, mem.ignore_boards, mem.password_salt, mem.pm_prefs, mem.buddy_list, mem.alerts';
+			mem.total_time_logged_in, mem.notify_announcements, mem.notify_regularity, mem.notify_send_body,
+			mem.notify_types, lo.url, mem.ignore_boards, mem.password_salt, mem.pm_prefs, mem.buddy_list, mem.alerts';
 			break;
 		case 'minimal':
 			$select_columns = '
@@ -1416,7 +1372,6 @@ function loadMemberContext($user, $display_custom_fields = false)
 			'warning' => $profile['warning'],
 			'warning_status' => !empty($modSettings['warning_mute']) && $modSettings['warning_mute'] <= $profile['warning'] ? 'mute' : (!empty($modSettings['warning_moderate']) && $modSettings['warning_moderate'] <= $profile['warning'] ? 'moderate' : (!empty($modSettings['warning_watch']) && $modSettings['warning_watch'] <= $profile['warning'] ? 'watch' : (''))),
 			'local_time' => timeformat(time() + ($profile['time_offset'] - $user_info['time_offset']) * 3600, false),
-			'custom_fields' => array(),
 		);
 
 	// If the set isn't minimal then load their avatar as ell.
@@ -1502,7 +1457,7 @@ function loadMemberContext($user, $display_custom_fields = false)
  * Loads the user's custom profile fields
  *
  * @param integer|array $users A single user ID or an array of user IDs
- * @param string|array $params Either a string or an array of strings with profile field names
+ * @param string|array $param Either a string or an array of strings with profile field names
  * @return array|boolean An array of data about the fields and their values or false if nothing was loaded
  */
 function loadMemberCustomFields($users, $params)
@@ -1572,7 +1527,8 @@ function loadMemberCustomFields($users, $params)
 
 /**
  * Loads information about what browser the user is viewing with and places it in $context
- *  - uses the class from {@link Class-BrowserDetect.php}
+ *  - uses the class from Class-BrowserDetect.php
+ *
  */
 function detectBrowser()
 {
@@ -1586,11 +1542,33 @@ function detectBrowser()
  *
  * Wrapper function for detectBrowser
  * @param string $browser The browser we are checking for.
- * @return bool Whether or not the current browser is what we're looking for
 */
 function isBrowser($browser)
 {
 	global $context;
+
+	// @todo REMOVE THIS BEFORE BETA 1 RELEASE.
+	if (in_array($browser, array('ie7', 'ie6', 'ie5.5', 'ie5', 'ie5', 'ie4', 'mac_ie', 'firefox1')))
+	{
+		$line = $file = null;
+		foreach (debug_backtrace() as $step)
+		{
+			// Found it?
+			if (strpos($step['function'], 'query') === false && !in_array(substr($step['function'], 0, 7), array('smf_db_', 'preg_re', 'db_erro', 'call_us')) && strpos($step['function'], '__') !== 0)
+			{
+				$function = '<br>Function: ' . $step['function'];
+				break;
+			}
+
+			if (isset($step['line']))
+			{
+				$file = $step['file'];
+				$line = $step['line'];
+			}
+		}
+
+		log_error('Old browser support' . $function, 'debug', $file, $line);
+	}
 
 	// Don't know any browser!
 	if (empty($context['browser']))
@@ -1920,8 +1898,15 @@ function loadTheme($id_theme = 0, $initialize = true)
 	call_integration_hook('integrate_simple_actions', array(&$simpleActions, &$simpleAreas, &$simpleSubActions));
 	$context['simple_action'] = in_array($context['current_action'], $simpleActions) || isset($_REQUEST['area']) && in_array($_REQUEST['area'], $simpleAreas) || in_array($context['current_subaction'], $simpleSubActions);
 
+	// Wireless mode?  Load up the wireless stuff.
+	if (WIRELESS)
+	{
+		$context['template_layers'] = array(WIRELESS_PROTOCOL);
+		loadLanguage('Wireless+index+Modifications');
+		loadTemplate('Wireless');
+	}
 	// Output is fully XML, so no need for the index template.
-	if (isset($_REQUEST['xml']))
+	elseif (isset($_REQUEST['xml']))
 	{
 		loadLanguage('index+Modifications');
 		loadTemplate('Xml');
@@ -2043,14 +2028,14 @@ function loadTheme($id_theme = 0, $initialize = true)
 
 	// Add the JQuery library to the list of files to load.
 	if (isset($modSettings['jquery_source']) && $modSettings['jquery_source'] == 'cdn')
-		loadJavascriptFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', array('external' => true), 'jquery');
+		loadJavascriptFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js', array('external' => true), 'jquery');
 	elseif (isset($modSettings['jquery_source']) && $modSettings['jquery_source'] == 'local')
-		loadJavascriptFile('jquery-2.1.4.min.js', array('default_theme' => true, 'seed' => false), 'jquery');
+		loadJavascriptFile('jquery-2.1.3.min.js', array('default_theme' => true, 'seed' => false), 'jquery');
 	elseif (isset($modSettings['jquery_source'], $modSettings['jquery_custom']) && $modSettings['jquery_source'] == 'custom')
 		loadJavascriptFile($modSettings['jquery_custom'], array(), 'jquery');
 	// Auto loading? template_javascript() will take care of the local half of this.
 	else
-		loadJavascriptFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', array('external' => true), 'jquery');
+		loadJavascriptFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js', array('external' => true), 'jquery');
 
 	// Queue our JQuery plugins!
 	loadJavascriptFile('smf_jquery_plugins.js', array('default_theme' => true));
@@ -2151,7 +2136,7 @@ function loadTheme($id_theme = 0, $initialize = true)
  * @param string $template_name The name of the template to load
  * @param array|string $style_sheets The name of a single stylesheet or an array of names of stylesheets to load
  * @param bool $fatal If true, dies with an error message if the template cannot be found
- * @return boolean Whether or not the template was loaded
+ * @return boolean True if the template was loaded, false otherwise
  */
 function loadTemplate($template_name, $style_sheets = array(), $fatal = true)
 {
@@ -2232,7 +2217,7 @@ function loadTemplate($template_name, $style_sheets = array(), $fatal = true)
  * @todo get rid of reading $_REQUEST directly
  *
  * @param string $sub_template_name The name of the sub-template to load
- * @param bool $fatal Whether to die with an error if the sub-template can't be loaded
+ * @param bool Whether to die with an error if the sub-template can't be loaded
  */
 function loadSubTemplate($sub_template_name, $fatal = false)
 {
@@ -2315,7 +2300,6 @@ function loadCSSFile($filename, $params = array(), $id = '')
  * - all code added with this function is added to the same <style> tag so do make sure your css is valid!
  *
  * @param string $css Some css code
- * @return void|bool Adds the CSS to the $context['css_header'] array or returns if no CSS is specified
  */
 function addInlineCss($css)
 {
@@ -2402,8 +2386,7 @@ function addJavascriptVar($key, $value, $escape = false)
  * - all code added with this function is added to the same <script> tag so do make sure your JS is clean!
  *
  * @param string $javascript Some JS code
- * @param bool $defer Whether the script should load in <head> or before the closing <html> tag
- * @return void|bool Adds the code to one of the $context['javascript_inline'] arrays or returns if no JS was specified
+ * @param bool Whether the script should load in <head> or before the closing <html> tag
  */
 function addInlineJavascript($javascript, $defer = false)
 {
@@ -2805,7 +2788,7 @@ function template_include($filename, $once = false)
 		else
 			ob_start();
 
-		if (isset($_GET['debug']))
+		if (isset($_GET['debug']) && !WIRELESS)
 			header('Content-Type: application/xhtml+xml; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
 
 		// Don't cache error pages!!
@@ -3146,13 +3129,6 @@ function cache_put_data($key, $value, $ttl = 120)
 
 	if (isset($db_show_debug) && $db_show_debug === true)
 		$cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
-
-	// Invalidate the opcode cache
-	if (function_exists('opcache_invalidate'))
-   		opcache_invalidate($cachedir . '/data_' . $key . '.php', true);
-
-	if (function_exists('apc_delete_file'))
-   		@apc_delete_file($cachedir . '/data_' . $key . '.php');
 }
 
 /**
@@ -3259,20 +3235,7 @@ function get_memcached_server($level = 3)
 	global $memcached, $db_persist, $cache_memcached;
 
 	$servers = explode(',', $cache_memcached);
-	$server = trim($servers[array_rand($servers)]);
-
-	$port = 0;
-
-	// Normal host names do not contain slashes, while e.g. unix sockets do. Assume alternative transport pipe with port 0.
-	if(strpos($server,'/') !== false)
-		$host = $server;
-	else
-	{
-		$server = explode(':', $server);
-		$host = $server[0];
-		$port = isset($server[1]) ? $server[1] : 11211;
-	}
-
+	$server = explode(':', trim($servers[array_rand($servers)]));
 	$cache = (function_exists('memcache_get')) ? 'memcache' : ((function_exists('memcached_get') ? 'memcached' : ''));
 
 	// Don't try more times than we have servers!
@@ -3282,111 +3245,20 @@ function get_memcached_server($level = 3)
 	if (empty($db_persist))
 	{
 		if ($cache === 'memcached')
-			$memcached = memcached_connect($host, $port);
+			$memcached = memcached_connect($server[0], empty($server[1]) ? 11211 : $server[1]);
 		if ($cache === 'memcache')
-			$memcached = memcache_connect($host, $port);
+			$memcached = memcache_connect($server[0], empty($server[1]) ? 11211 : $server[1]);
 	}
 	else
 	{
 		if ($cache === 'memcached')
-			$memcached = memcached_pconnect($host, $port);
+			$memcached = memcached_pconnect($server[0], empty($server[1]) ? 11211 : $server[1]);
 		if ($cache === 'memcache')
-			$memcached = memcache_pconnect($host, $port);
+			$memcached = memcache_pconnect($server[0], empty($server[1]) ? 11211 : $server[1]);
 	}
 
 	if (!$memcached && $level > 0)
 		get_memcached_server($level - 1);
-}
-
-/**
- * Helper function to set an array of data for an user's avatar.
- *
- * Makes assumptions based on the data provided, the following keys are required:
- * - avatar The raw "avatar" column in members table
- * - email The user's email. Used to get the gravatar info
- * - filename The attachment filename
- *
- * @param array $data An array of raw info
- * @return array An array of avatar data
- */
-function set_avatar_data($data = array())
-{
-	global $modSettings, $boardurl, $smcFunc, $image_proxy_enabled, $image_proxy_secret;
-
-	// Come on!
-	if (empty($data))
-		return array();
-
-	// Set a nice default var.
-	$image = '';
-
-	// Gravatar has been set as mandatory!
-	if (!empty($modSettings['gravatarOverride']))
-	{
-		if (!empty($modSettings['gravatarAllowExtraEmail']) && !empty($data['avatar']) && stristr($data['avatar'], 'gravatar://'))
-			$image = get_gravatar_url($smcFunc['substr']($data['avatar'], 11));
-
-		else if (!empty($data['email']))
-			$image = get_gravatar_url($data['email']);
-	}
-
-	// Look if the user has a gravatar field or has set an external url as avatar.
-	else
-	{
-		// So it's stored in the member table?
-		if (!empty($data['avatar']))
-		{
-			// Gravatar.
-			if (stristr($data['avatar'], 'gravatar://'))
-			{
-				if ($data['avatar'] == 'gravatar://')
-					$image = get_gravatar_url($data['email']);
-
-				elseif (!empty($modSettings['gravatarAllowExtraEmail']))
-					$image = get_gravatar_url($smcFunc['substr']($data['avatar'], 11));
-			}
-
-			// External url.
-			else
-			{
-				// Using ssl?
-				if (!empty($modSettings['force_ssl']) && $image_proxy_enabled && stripos($data['avatar'], 'http://') !== false)
-					$image = strtr($boardurl, array('http://' => 'https://')) . '/proxy.php?request=' . urlencode($data['avatar']) . '&hash=' . md5($data['avatar'] . $image_proxy_secret);
-
-				// Just a plain external url.
-				else
-					$image = (stristr($data['avatar'], 'http://') || stristr($data['avatar'], 'https://')) ? $data['avatar'] : $modSettings['avatar_url'] . '/' . $data['avatar'];
-			}
-		}
-
-		// Perhaps this user has an attachment as avatar...
-		else if (!empty($data['filename']))
-			$image = $modSettings['custom_avatar_url'] . '/' . $data['filename'];
-
-		// Right... no avatar... use our default image.
-		else
-			$image = $modSettings['avatar_url'] . '/default.png';
-	}
-
-	call_integration_hook('integrate_set_avatar_data', array(&$image, &$data));
-
-	// At this point in time $image has to be filled unless you chose to force gravatar and the user doesn't have the needed data to retrieve it... thus a check for !empty() is still needed.
-	if (!empty($image))
-		return array(
-			'name' => !empty($data['avatar']) ? $data['avatar'] : '',
-			'image' => '<img class="avatar" src="' . $image . '" />',
-			'href' => $image,
-			'url' => $image,
-		);
-
-	// Fallback to make life easier for everyone...
-	else
-		return array(
-			'name' => '',
-			'image' => '',
-			'href' => '',
-			'url' => '',
-		);
 }
 
 ?>

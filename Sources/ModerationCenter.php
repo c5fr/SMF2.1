@@ -19,7 +19,7 @@ if (!defined('SMF'))
 /**
  * Entry point for the moderation center.
  *
- * @param bool $dont_call If true, doesn't call the function for the appropriate mod area
+ * @param bool $dont_call = false
  */
 function ModerationMain($dont_call = false)
 {
@@ -1167,8 +1167,7 @@ function ViewWatchedUsers()
 
 /**
  * Callback for createList().
- * @param string $approve_query Not used here
- * @return int The number of users on the watch list
+ * @param $approve_query
  */
 function list_getWatchedUserCount($approve_query)
 {
@@ -1191,11 +1190,11 @@ function list_getWatchedUserCount($approve_query)
 /**
  * Callback for createList().
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort things
- * @param string $approve_query A query for approving things. Not used here.
- * @param string $dummy Not used here.
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
+ * @param $approve_query
+ * @param $dummy
  */
 function list_getWatchedUsers($start, $items_per_page, $sort, $approve_query, $dummy)
 {
@@ -1294,8 +1293,7 @@ function list_getWatchedUsers($start, $items_per_page, $sort, $approve_query, $d
 /**
  * Callback for createList().
  *
- * @param string $approve_query A query to pull only approved items
- * @return int The total number of posts by watched users
+ * @param $approve_query
  */
 function list_getWatchedUserPostsCount($approve_query)
 {
@@ -1322,12 +1320,11 @@ function list_getWatchedUserPostsCount($approve_query)
 /**
  * Callback for createList().
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort the results (not used here)
- * @param string $approve_query A query to only pull approved items
- * @param int[] $delete_boards An array containing the IDs of boards we can delete posts in
- * @return array An array of info about posts by watched users
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
+ * @param $approve_query
+ * @param $delete_boards
  */
 function list_getWatchedUserPosts($start, $items_per_page, $sort, $approve_query, $delete_boards)
 {
@@ -1573,7 +1570,6 @@ function ViewWarningLog()
 
 /**
  * Callback for createList().
- * @return int The total number of warnings that have been issued
  */
 function list_getWarningCount()
 {
@@ -1596,10 +1592,9 @@ function list_getWarningCount()
 /**
  * Callback for createList().
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort the results
- * @return array An array of data about warning log entries
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
  */
 function list_getWarnings($start, $items_per_page, $sort)
 {
@@ -1789,7 +1784,6 @@ function ViewWarningTemplates()
 
 /**
   * Callback for createList().
-  * @return int The total number of warning templates
   */
 function list_getWarningTemplateCount()
 {
@@ -1815,10 +1809,9 @@ function list_getWarningTemplateCount()
 /**
  * Callback for createList().
  *
- * @param int $start The item to start with (for pagination purposes)
- * @param int $items_per_page The number of items to show per page
- * @param string $sort A string indicating how to sort the results
- * @return array An arrray of info about the available warning templates
+ * @param $start
+ * @param $items_per_page
+ * @param $sort
  */
 function list_getWarningTemplates($start, $items_per_page, $sort)
 {

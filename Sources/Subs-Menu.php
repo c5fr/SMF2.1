@@ -18,9 +18,9 @@ if (!defined('SMF'))
 
 /**
  * Create a menu.
- * @param array $menuData An array of menu data
- * @param array $menuOptions An array of menu options
- * @return boolean|array False if nothing to show or an array of info about the selected menu item
+ * @param array $menuData
+ * @param array $menuOptions = array()
+ * @return boolean|array
  */
 function createMenu($menuData, $menuOptions = array())
 {
@@ -264,9 +264,12 @@ function createMenu($menuData, $menuOptions = array())
 	}
 
 	// Almost there - load the template and add to the template layers.
-	loadTemplate(isset($menuOptions['template_name']) ? $menuOptions['template_name'] : 'GenericMenu');
-	$menu_context['layer_name'] = (isset($menuOptions['layer_name']) ? $menuOptions['layer_name'] : 'generic_menu') . '_dropdown';
-	$context['template_layers'][] = $menu_context['layer_name'];
+	if (!WIRELESS)
+	{
+		loadTemplate(isset($menuOptions['template_name']) ? $menuOptions['template_name'] : 'GenericMenu');
+		$menu_context['layer_name'] = (isset($menuOptions['layer_name']) ? $menuOptions['layer_name'] : 'generic_menu') . '_dropdown';
+		$context['template_layers'][] = $menu_context['layer_name'];
+	}
 
 	// Check we had something - for sanity sake.
 	if (empty($include_data))
@@ -285,8 +288,8 @@ function createMenu($menuData, $menuOptions = array())
 
 /**
  * Delete a menu.
- * @param string $menu_id The ID of the menu to destroy or 'last' for the most recent one
- * @return bool|void False if the menu doesn't exist, nothing otherwise
+ * @param string $menu_id = 'last'
+ * @return boolean
  */
 function destroyMenu($menu_id = 'last')
 {

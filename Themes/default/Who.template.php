@@ -10,9 +10,7 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * This handles the Who's Online page
- */
+// The only template in the file.
 function template_main()
 {
 	global $context, $settings, $scripturl, $txt;
@@ -118,9 +116,6 @@ function template_main()
 	</div>';
 }
 
-/**
- * This displays a nice credits page
- */
 function template_credits()
 {
 	global $context, $txt;
@@ -217,7 +212,7 @@ function template_credits()
 	}
 
 	// How about Modifications, we all love em
-	if (!empty($context['credits_modifications']) || !empty($context['copyrights']['mods']))
+	if (!empty($context['credits_modifications']))
 	{
 		echo '
 		<div class="cat_bar">
@@ -225,18 +220,11 @@ function template_credits()
 		</div>
 		<div class="windowbg">';
 
-		// Display the credits.
-		if (!empty($context['credits_modifications']))
-			echo '
-			', implode('
-			<br>', $context['credits_modifications']);
-
-		// Legacy.
-		if (!empty($context['copyrights']['mods']))
-			echo '
-			<br>', implode('
-			<br>', $context['copyrights']['mods']);
-
+		echo '
+			<dl>
+				<dt><strong>', $txt['credits_modifications'], '</strong></dt>
+				<dd>', implode('</dd><dd>', $context['credits_modifications']), '</dd>
+			</dl>';
 
 		echo '
 		</div>';
@@ -245,10 +233,27 @@ function template_credits()
 	// SMF itself
 	echo '
 		<div class="cat_bar">
-			<h3 class="catbg">', $txt['credits_forum'],' ', $txt['credits_copyright'], '</h3>
+			<h3 class="catbg">', $txt['credits_copyright'], '</h3>
 		</div>
 		<div class="windowbg">
-			', $context['copyrights']['smf'], '
+			<dl>
+				<dt><strong>', $txt['credits_forum'], '</strong></dt>', '
+				<dd>', $context['copyrights']['smf'];
+
+	echo '
+				</dd>
+			</dl>';
+
+	if (!empty($context['copyrights']['mods']))
+	{
+		echo '
+			<dl>
+				<dt><strong>', $txt['credits_modifications'], '</strong></dt>
+				<dd>', implode('</dd><dd>', $context['copyrights']['mods']), '</dd>
+			</dl>';
+	}
+
+	echo '
 		</div>
 	</div>';
 }

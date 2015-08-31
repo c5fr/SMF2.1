@@ -17,8 +17,9 @@ if (!defined('SMF'))
 
 /**
  * Create a new list
- * @param array $listOptions An array of options for the list - 'id', 'columns', 'items_per_page', 'get_count', etc.
+ * @param array $listOptions
  */
+
 function createList($listOptions)
 {
 	global $context, $smcFunc;

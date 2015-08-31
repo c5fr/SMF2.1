@@ -23,6 +23,8 @@ if (!defined('SMF'))
  *  It caches the referring URL in $_SESSION['login_url'].
  *  It is accessed from ?action=login.
  *  @uses Login template and language file with the login sub-template.
+ *  @uses the protocol_login sub-template in the Wireless template,
+ *   if you are using a wireless device
  */
 function Login()
 {
@@ -32,16 +34,22 @@ function Login()
 	if (!empty($user_info['id']))
 		redirectexit();
 
-	// We need to load the Login template/language file.
-	loadLanguage('Login');
-	loadTemplate('Login');
-
-	$context['sub_template'] = 'login';
-
-	if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+	// In wireless?  If so, use the correct sub template.
+	if (WIRELESS)
+		$context['sub_template'] = WIRELESS_PROTOCOL . '_login';
+	// Otherwise, we need to load the Login template/language file.
+	else
 	{
-		$context['from_ajax'] = true;
-		$context['template_layers'] = array();
+		loadLanguage('Login');
+		loadTemplate('Login');
+
+		$context['sub_template'] = 'login';
+
+		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+		{
+			$context['from_ajax'] = true;
+			$context['template_layers'] = array();
+		}
 	}
 
 	// Get the template ready.... not really much else to do.
@@ -107,18 +115,6 @@ function Login2()
 		$user_settings['password_salt'] = substr(md5(mt_rand()), 0, 4);
 		updateMemberData($user_info['id'], array('password_salt' => $user_settings['password_salt']));
 
-		// Preserve the 2FA cookie?
-		if (!empty($modSettings['tfa_mode']) && !empty($_COOKIE[$cookiename . '_tfa']))
-		{
-			list ($tfamember, $tfasecret, $exp, $state, $preserve) = @unserialize($_COOKIE[$cookiename . '_tfa']);
-
-			// If we're preserving the cookie, reset it with updated salt
-			if ($preserve && time() < $exp)
-				setTFACookie(3153600, $user_info['password_salt'], hash_salt($user_settings['tfa_backup'], $user_settings['password_salt']), true);
-			else
-				setTFACookie(-3600, 0, '');
-		}
-
 		setLoginCookie($timeout - time(), $user_info['id'], hash_salt($user_settings['passwd'], $user_settings['password_salt']));
 
 		redirectexit('action=login2;sa=check;member=' . $user_info['id'], $context['server']['needs_login_fix']);
@@ -170,13 +166,18 @@ function Login2()
 	// Set up the cookie length.  (if it's invalid, just fall through and use the default.)
 	if (isset($_POST['cookieneverexp']) || (!empty($_POST['cookielength']) && $_POST['cookielength'] == -1))
 		$modSettings['cookieTime'] = 3153600;
-	elseif (!empty($_POST['cookielength']) && ($_POST['cookielength'] >= 1 && $_POST['cookielength'] <= 525600))
+	elseif (!empty($_POST['cookielength']) && ($_POST['cookielength'] >= 1 || $_POST['cookielength'] <= 525600))
 		$modSettings['cookieTime'] = (int) $_POST['cookielength'];
 
 	loadLanguage('Login');
-	// Load the template stuff.
-	loadTemplate('Login');
-	$context['sub_template'] = 'login';
+	// Load the template stuff - wireless or normal.
+	if (WIRELESS)
+		$context['sub_template'] = WIRELESS_PROTOCOL . '_login';
+	else
+	{
+		loadTemplate('Login');
+		$context['sub_template'] = 'login';
+	}
 
 	// Set up the default/fallback stuff.
 	$context['default_username'] = isset($_POST['user']) ? preg_replace('~&amp;#(\\d{1,7}|x[0-9a-fA-F]{1,6});~', '&#\\1;', $smcFunc['htmlspecialchars']($_POST['user'])) : '';
@@ -430,7 +431,7 @@ function LoginTFA()
 		{
 			updateMemberData($member['id_member'], array('last_login' => time()));
 
-			setTFACookie(3153600, $member['id_member'], hash_salt($member['tfa_backup'], $member['password_salt']), !empty($_POST['tfa_preserve']));
+			setTFACookie(3153600, $member['id_member'], hash_salt($member['tfa_backup'], $member['password_salt']));
 			redirectexit();
 		}
 		else
@@ -620,12 +621,12 @@ function DoLogin()
  * It redirects back to $_SESSION['logout_url'], if it exists.
  * It is accessed via ?action=logout;session_var=...
  *
- * @param bool $internal If true, it doesn't check the session
- * @param bool $redirect Whether or not to redirect the user after they log out
+ * @param bool $internal if true, it doesn't check the session
+ * @param $redirect
  */
 function Logout($internal = false, $redirect = true)
 {
-	global $sourcedir, $user_info, $user_settings, $context, $smcFunc, $cookiename, $modSettings;
+	global $sourcedir, $user_info, $user_settings, $context, $smcFunc;
 
 	// Make sure they aren't being auto-logged out.
 	if (!$internal)
@@ -659,24 +660,13 @@ function Logout($internal = false, $redirect = true)
 
 	// Empty the cookie! (set it in the past, and for id_member = 0)
 	setLoginCookie(-3600, 0);
+	if (!empty($modSettings['tfa_mode']))
+		setTFACookie(-3600, 0, '');
 
 	// And some other housekeeping while we're at it.
-	$salt = substr(md5(mt_rand()), 0, 4);
-	if (!empty($user_info['id']))
-		updateMemberData($user_info['id'], array('password_salt' => $salt));
-
-	if (!empty($modSettings['tfa_mode']) && !empty($user_info['id']) && !empty($_COOKIE[$cookiename . '_tfa']))
-	{
-		list ($tfamember, $tfasecret, $exp, $state, $preserve) = @unserialize($_COOKIE[$cookiename . '_tfa']);
-
-		// If we're preserving the cookie, reset it with updated salt
-		if ($preserve && time() < $exp)
-			setTFACookie(3153600, $user_info['id'], hash_salt($user_settings['tfa_backup'], $salt), true);
-		else
-			setTFACookie(-3600, 0, '');
-	}
-
 	session_destroy();
+	if (!empty($user_info['id']))
+		updateMemberData($user_info['id'], array('password_salt' => substr(md5(mt_rand()), 0, 4)));
 
 	// Off to the merry board index we go!
 	if ($redirect)
@@ -701,9 +691,9 @@ function Logout($internal = false, $redirect = true)
 /**
  * MD5 Encryption used for older passwords. (SMF 1.0.x/YaBB SE 1.5.x hashing)
  *
- * @param string $data The data
- * @param string $key The key
- * @return string The HMAC MD5 of data with key
+ * @param string $data
+ * @param string $key
+ * @return string, the HMAC MD5 of data with key
  */
 function md5_hmac($data, $key)
 {
@@ -714,9 +704,9 @@ function md5_hmac($data, $key)
 /**
  * Custom encryption for phpBB3 based passwords.
  *
- * @param string $passwd The raw (unhashed) password
- * @param string $passwd_hash The hashed password
- * @return string The hashed version of $passwd
+ * @param string $passwd
+ * @param string $passwd_hash
+ * @return string
  */
 function phpBB3_password_check($passwd, $passwd_hash)
 {
@@ -771,10 +761,10 @@ function phpBB3_password_check($passwd, $passwd_hash)
  * This protects against brute force attacks on a member's password.
  * Importantly, even if the password was right we DON'T TELL THEM!
  *
- * @param int $id_member The ID of the member
- * @param bool|string $password_flood_value False if we don't have a flood value, otherwise a string with a timestamp and number of tries separated by a |
- * @param bool $was_correct Whether or not the password was correct
- * @param bool $tfa Whether we're validating for two-factor authentication
+ * @param $id_member
+ * @param $password_flood_value = false
+ * @param $was_correct = false
+ * @param $tfa = false;
  */
 function validatePasswordFlood($id_member, $password_flood_value = false, $was_correct = false, $tfa = false)
 {

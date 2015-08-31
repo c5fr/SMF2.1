@@ -10,9 +10,7 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Displays a sortable listing of all members registered on the forum.
- */
+// Displays a sortable listing of all members registered on the forum.
 function template_main()
 {
 	global $context, $settings, $scripturl, $txt;
@@ -138,9 +136,7 @@ function template_main()
 
 }
 
-/**
- * A page allowing people to search the member list.
- */
+// A page allowing people to search the member list.
 function template_search()
 {
 	global $context, $scripturl, $txt;

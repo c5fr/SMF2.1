@@ -23,9 +23,9 @@ if (!defined('SMF'))
  * - sets the cookie and session to last the number of seconds specified by cookie_length.
  * - when logging out, if the globalCookies setting is enabled, attempts to clear the subdomain's cookie too.
  *
- * @param int $cookie_length How long the cookie should last (in minutes)
- * @param int $id The ID of the member to set the cookie for
- * @param string $password The hashed password
+ * @param int $cookie_length
+ * @param int $id The id of the member
+ * @param string $password = ''
  */
 function setLoginCookie($cookie_length, $id, $password = '')
 {
@@ -110,23 +110,19 @@ function setLoginCookie($cookie_length, $id, $password = '')
 /**
  * Sets Two Factor Auth cookie
  *
- * @param int $cookie_length How long the cookie should last, in minutes
- * @param int $id The ID of the member
+ * @param int $cookie_length
+ * @param int $id
  * @param string $secret Should be a salted secret using hash_salt
- * @param bool $preserve Whether to preserve the cookie for 30 days
  */
-function setTFACookie($cookie_length, $id, $secret, $preserve = false)
+function setTFACookie($cookie_length, $id, $secret)
 {
 	global $modSettings, $cookiename, $boardurl;
 
 	$identifier = $cookiename . '_tfa';
 	$cookie_state = (empty($modSettings['localCookies']) ? 0 : 1) | (empty($modSettings['globalCookies']) ? 0 : 2);
 
-	if ($preserve)
-		$cookie_length = 81600 * 30;
-
 	// Get the data and path to set it on.
-	$data = serialize(empty($id) ? array(0, '', 0, $cookie_state, false) : array($id, $secret, time() + $cookie_length, $cookie_state, $preserve));
+	$data = serialize(empty($id) ? array(0, '', 0) : array($id, $secret, time() + $cookie_length, $cookie_state));
 	$cookie_url = url_parts(!empty($modSettings['localCookies']), !empty($modSettings['globalCookies']));
 
 	// Set the cookie, $_COOKIE, and session variable.
@@ -144,9 +140,9 @@ function setTFACookie($cookie_length, $id, $secret, $preserve = false)
  * - normally, local and global should be the localCookies and globalCookies settings, respectively.
  * - uses boardurl to determine these two things.
  *
- * @param bool $local Whether we want local cookies
- * @param bool $global Whether we want global cookies
- * @return array An array to set the cookie on with domain and path in it, in that order
+ * @param bool $local
+ * @param bool $global
+ * @return array an array to set the cookie on with domain and path in it, in that order
  */
 function url_parts($local, $global)
 {
@@ -227,7 +223,7 @@ function InMaintenance()
  * - sends data to template so the admin is sent on to the page they
  *   wanted if their password is correct, otherwise they can try again.
  *
- * @param string $type What login type is this - can be 'admin' or 'moderate'
+ * @param string $type = 'admin'
  */
 function adminLogin($type = 'admin')
 {
@@ -286,8 +282,8 @@ function adminLogin($type = 'admin')
  * Used by the adminLogin() function.
  * if 'value' is an array, the function is called recursively.
  *
- * @param string $k The keys
- * @param string $v The values
+ * @param string $k key
+ * @param string $v value
  * @return string 'hidden' HTML form fields, containing key-value-pairs
  */
 function adminLogin_outputPostVars($k, $v)
@@ -310,8 +306,9 @@ function adminLogin_outputPostVars($k, $v)
 /**
  * Properly urlencodes a string to be used in a query
  *
- * @param string $get
- * @return string Our query string
+ * @global type $scripturl
+ * @param type $get
+ * @return our query string
  */
 function construct_query_string($get)
 {
@@ -351,11 +348,11 @@ function construct_query_string($get)
  * - searches for members whose username, display name, or e-mail address match the given pattern of array names.
  * - searches only buddies if buddies_only is set.
  *
- * @param array $names The names of members to search for
- * @param bool $use_wildcards Whether to use wildcards. Accepts wildcards ? and * in the pattern if true
- * @param bool $buddies_only Whether to only search for the user's buddies
- * @param int $max The maximum number of results
- * @return array An array containing information about the matching members
+ * @param array $names
+ * @param bool $use_wildcards = false, accepts wildcards ? and * in the pattern if true
+ * @param bool $buddies_only = false,
+ * @param int $max = 500 retrieves a maximum of max members, if passed
+ * @return array containing information about the matching members
  */
 function findMembers($names, $use_wildcards = false, $buddies_only = false, $max = 500)
 {
@@ -443,11 +440,16 @@ function JSMembers()
 
 	checkSession('get');
 
-	// Why is this in the Help template, you ask?  Well, erm... it helps you.  Does that work?
-	loadTemplate('Help');
+	if (WIRELESS)
+		$context['sub_template'] = WIRELESS_PROTOCOL . '_pm';
+	else
+	{
+		// Why is this in the Help template, you ask?  Well, erm... it helps you.  Does that work?
+		loadTemplate('Help');
 
-	$context['template_layers'] = array();
-	$context['sub_template'] = 'find_members';
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'find_members';
+	}
 
 	if (isset($_REQUEST['search']))
 		$context['last_search'] = $smcFunc['htmlspecialchars']($_REQUEST['search'], ENT_QUOTES);
@@ -478,7 +480,7 @@ function JSMembers()
 
 		$context['page_index'] = constructPageIndex($scripturl . '?action=findmember;search=' . $context['last_search'] . ';' . $context['session_var'] . '=' . $context['session_id'] . ';input=' . $context['input_box_name'] . ($context['quote_results'] ? ';quote=1' : '') . ($context['buddy_search'] ? ';buddies' : ''), $_REQUEST['start'], $total_results, 7);
 
-		// Determine the navigation context.
+		// Determine the navigation context (especially useful for the wireless template).
 		$base_url = $scripturl . '?action=findmember;search=' . urlencode($context['last_search']) . (empty($_REQUEST['u']) ? '' : ';u=' . $_REQUEST['u']) . ';' . $context['session_var'] . '=' . $context['session_id'];
 		$context['links'] = array(
 			'first' => $_REQUEST['start'] >= 7 ? $base_url . ';start=0' : '',
@@ -557,8 +559,8 @@ function RequestMembers()
  * - mails the new password to the email address of the user.
  * - if username is not set, only a new password is generated and sent.
  *
- * @param int $memID The ID of the member
- * @param string $username The new username. If set, also checks the validity of the username
+ * @param int $memID
+ * @param string $username = null
  */
 function resetPassword($memID, $username = null)
 {
@@ -617,11 +619,11 @@ function resetPassword($memID, $username = null)
 /**
  * Checks a username obeys a load of rules
  *
- * @param int $memID The ID of the member
- * @param string $username The username to validate
- * @param boolean $return_error Whether to return errors
- * @param boolean $check_reserved_name Whether to check this against the list of reserved names
- * @return array|null Null if there are no errors, otherwise an array of errors if return_error is true
+ * @param int $memID
+ * @param string $username
+ * @param boolean $return_error
+ * @param boolean $check_reserved_name
+ * @return string Returns null if fine
  */
 function validateUsername($memID, $username, $return_error = false, $check_reserved_name = true)
 {
@@ -670,10 +672,10 @@ function validateUsername($memID, $username, $return_error = false, $check_reser
  * - if password checking is enabled, will check that none of the words in restrict_in appear in the password.
  * - returns an error identifier if the password is invalid, or null.
  *
- * @param string $password The desired password
- * @param string $username The username
- * @param array $restrict_in An array of restricted strings that cannot be part of the password (email address, username, etc.)
- * @return null|string Null if valid or a string indicating what the problem was
+ * @param string $password
+ * @param string $username
+ * @param array $restrict_in = array()
+ * @return string an error identifier if the password is invalid
  */
 function validatePassword($password, $username, $restrict_in = array())
 {
@@ -806,7 +808,6 @@ function rebuildModCache()
 
 /**
  * The same thing as setcookie but gives support for HTTP-Only cookies in PHP < 5.2
- * @todo We can remove this since SMF requires PHP >= 5.3.8 now
  *
  * @param string $name
  * @param string $value = ''
@@ -836,10 +837,10 @@ function smf_setcookie($name, $value = '', $expire = 0, $path = '', $domain = ''
 /**
  * Hashes username with password
  *
- * @param string $username The username
- * @param string $password The unhashed password
- * @param int $cost The cost
- * @return string The hashed password
+ * @param string $username
+ * @param string $password
+ * @param int $cost
+ * @return string
  */
 function hash_password($username, $password, $cost = null)
 {
@@ -857,9 +858,9 @@ function hash_password($username, $password, $cost = null)
 /**
  * Hashes password with salt, this is solely used for cookies.
  *
- * @param string $password The password
- * @param string $salt The salt
- * @return string The hashed password
+ * @param string $password
+ * @param string $salt
+ * @return string
  */
 function hash_salt($password, $salt)
 {
@@ -869,10 +870,10 @@ function hash_salt($password, $salt)
 /**
  * Verifies a raw SMF password against the bcrypt'd string
  *
- * @param string $username The username
- * @param string $password The password
- * @param string $hash The hashed string
- * @return bool Whether the hashed password matches the string
+ * @param string $username
+ * @param string $password
+ * @param string $hash
+ * @return bool
  */
 function hash_verify_password($username, $password, $hash)
 {
@@ -886,7 +887,7 @@ function hash_verify_password($username, $password, $hash)
 /**
  * Returns the length for current hash
  *
- * @return int The length for the current hash
+ * @return int
  */
 function hash_length()
 {
@@ -896,8 +897,8 @@ function hash_length()
 /**
  * Benchmarks the server to figure out an appropriate cost factor (minimum 9)
  *
- * @param float $hashTime Time to target, in seconds
- * @return int The cost
+ * @param int $hashTime Time to target, in seconds
+ * @return int
  */
 function hash_benchmark($hashTime = 0.2)
 {

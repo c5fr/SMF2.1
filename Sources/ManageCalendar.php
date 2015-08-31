@@ -172,11 +172,6 @@ function ModifyHolidays()
 		),
 		'additional_rows' => array(
 			array(
-				'position' => 'above_column_headers',
-				'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit">
-					<a class="button_link" href="' . $scripturl . '?action=admin;area=managecalendar;sa=editholiday">' . $txt['holidays_add'] . '</a>',
-			),
-			array(
 				'position' => 'below_table_data',
 				'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit">
 					<a class="button_link" href="' . $scripturl . '?action=admin;area=managecalendar;sa=editholiday">' . $txt['holidays_add'] . '</a>',
@@ -303,8 +298,7 @@ function EditHoliday()
 /**
  * Show and allow to modify calendar settings. Obviously.
  *
- * @param bool $return_config Whether to return the $config_vars array (used for admin search)
- * @return void|array Returns nothing or returns $config_vars if $return_config is true
+ * @param bool $return_config = false
  */
 function ModifyCalendarSettings($return_config = false)
 {

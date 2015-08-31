@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * The stats page.
- */
 function template_main()
 {
 	global $context, $settings, $txt, $scripturl, $modSettings;
@@ -218,7 +215,7 @@ function template_main()
 			</tbody>
 		</table>
 	</div>
-	<script>
+	<script><!-- // --><![CDATA[
 		var oStatsCenter = new smf_StatsCenter({
 			sTableId: \'stats\',
 
@@ -258,7 +255,7 @@ function template_main()
 				\'hits\'', '
 			]
 		});
-	</script>';
+	// ]]></script>';
 	}
 }
 

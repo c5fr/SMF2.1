@@ -237,10 +237,10 @@ function RemoveOldTopics2()
 /**
  * Removes the passed id_topic's. (permissions are NOT checked here!).
  *
- * @param array|int $topics The topics to remove (can be an id or an array of ids).
- * @param bool $decreasePostCount Whether to decrease the users' post counts
- * @param bool $ignoreRecycling Whether to ignore recycling board settings
- * @param bool $updateBoardCount Whether to adjust topic counts for the boards
+ * @param array/int $topics The topics to remove (can be an id or an array of ids).
+ * @param bool $decreasePostCount if true users' post count will be reduced
+ * @param bool $ignoreRecycling if true topics are not moved to the recycle board (if it exists).
+ * @param bool $updateBoardCount if true topics the board totals are adjusted.
  */
 function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = false, $updateBoardCount = true)
 {
@@ -578,8 +578,8 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
  * - uses boardurl to determine these two things.
  *
  * @param int $message The message id
- * @param bool $decreasePostCount Whether to decrease users' post counts
- * @return bool Whether the operation succeeded
+ * @param bool $decreasePostCount if true users' post count will be reduced
+ * @return array an array to set the cookie on with domain and path in it, in that order
  */
 function removeMessage($message, $decreasePostCount = true)
 {
@@ -1233,9 +1233,9 @@ function RestoreTopic()
 /**
  * Take a load of messages from one place and stick them in a topic
  *
- * @param array $msgs The IDs of the posts to merge
- * @param integer $from_topic The ID of the topic the messages were originally in
- * @param integer $target_topic The ID of the topic the messages are being merged into
+ * @param array $msgs
+ * @param integer $from_topic
+ * @param integer $target_topic
  */
 function mergePosts($msgs, $from_topic, $target_topic)
 {
@@ -1489,7 +1489,6 @@ function mergePosts($msgs, $from_topic, $target_topic)
 
 /**
  * Try to determine if the topic has already been deleted by another user.
- * @return bool False if it can't be deleted (recycling not enabled or no recycling board set), true if we've confirmed it can be deleted. Dies with an error if it's already been deleted.
  */
 function removeDeleteConcurrence()
 {

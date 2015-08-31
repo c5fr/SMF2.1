@@ -22,9 +22,9 @@ if (!defined('SMF'))
  * Since we changed the editor we don't need it any more, but let's keep it if any mod wants to use it
  * Convert only the BBC that can be edited in HTML mode for the editor.
  *
- * @param string $text The text with bbcode in it
- * @param boolean $compat_mode Whether to actually convert the text
- * @return string The text
+ * @param string $text
+ * @param boolean $compat_mode if true will convert the text, otherwise not (default false)
+ * @return string
  */
 function bbc_to_html($text, $compat_mode = false)
 {
@@ -92,8 +92,8 @@ function bbc_to_html($text, $compat_mode = false)
  *
  * The harder one - wysiwyg to BBC!
  *
- * @param string $text Text containing HTML
- * @return string The text with html converted to bbc
+ * @param string $text
+ * @return string
  */
 function html_to_bbc($text)
 {
@@ -981,8 +981,8 @@ function html_to_bbc($text)
  *
  * Returns an array of attributes associated with a tag.
  *
- * @param string $text A tag
- * @return array An array of attributes
+ * @param string $text
+ * @return string
  */
 function fetchTagAttributes($text)
 {
@@ -1041,8 +1041,8 @@ function fetchTagAttributes($text)
 /**
  * !!!Compatibility!!!
  * Attempt to clean up illegal BBC caused by browsers like Opera which don't obey the rules
- * @param string $text Text
- * @return string Cleaned up text
+ * @param string $text
+ * @return string
  */
 function legalise_bbc($text)
 {
@@ -1435,9 +1435,9 @@ function legalise_bbc($text)
 /**
  * !!!Compatibility!!!
  * A help function for legalise_bbc for sorting arrays based on length.
- * @param string $a A string
- * @param string $b Another string
- * @return int 1 if $a is shorter than $b, -1 otherwise
+ * @param string $a
+ * @param string $b
+ * @return int 1 or -1
  */
 function sort_array_length($a, $b)
 {
@@ -1491,8 +1491,8 @@ function loadLocale()
  * - The board_id is needed for the custom message icons (which can be set for
  *   each board individually).
  *
- * @param int $board_id The ID of the board
- * @return array An array of info about available icons
+ * @param int $board_id
+ * @return array
  */
 function getMessageIcons($board_id)
 {
@@ -1567,8 +1567,8 @@ function getMessageIcons($board_id)
 /**
  * Compatibility function - used in 1.1 for showing a post box.
  *
- * @param string $msg The message
- * @return string The HTML for an editor
+ * @param string $msg
+ * @return string
  */
 function theme_postbox($msg)
 {
@@ -1579,7 +1579,7 @@ function theme_postbox($msg)
 
 /**
  * Creates a box that can be used for richedit stuff like BBC, Smileys etc.
- * @param array $editorOptions Various options for the editor
+ * @param array $editorOptions
  */
 function create_control_richedit($editorOptions)
 {
@@ -1717,6 +1717,23 @@ function create_control_richedit($editorOptions)
 				'code' => 'email',
 				'description' => $editortxt['insert_email']
 			),
+			array(
+				'code' => 'ftp',
+				'description' => $editortxt['ftp']
+			),
+			array(),
+			array(
+				'code' => 'glow',
+				'description' => $editortxt['glow']
+			),
+			array(
+				'code' => 'shadow',
+				'description' => $editortxt['shadow']
+			),
+			array(
+				'code' => 'move',
+				'description' => $editortxt['marquee']
+			),
 			array(),
 			array(
 				'code' => 'superscript',
@@ -1725,6 +1742,10 @@ function create_control_richedit($editorOptions)
 			array(
 				'code' => 'subscript',
 				'description' => $editortxt['subscript']
+			),
+			array(
+				'code' => 'tt',
+				'description' => $editortxt['teletype']
 			),
 			array(),
 			array(
@@ -1754,7 +1775,7 @@ function create_control_richedit($editorOptions)
 			),
 		);
 
-		$editor_tag_map = array(
+		$disabled_editor_tags = array(
 			'b' => 'bold',
 			'i' => 'italic',
 			'u' => 'underline',
@@ -1767,8 +1788,8 @@ function create_control_richedit($editorOptions)
 		);
 
 		// Allow mods to modify BBC buttons.
-		// Note: pass the array here is not necessary and is deprecated, but it is kept for backward compatibility with 2.0
-		call_integration_hook('integrate_bbc_buttons', array(&$context['bbc_tags'], &$editor_tag_map));
+		// Note: pass the array here is not necessary and is deprecated, but it is ketp for backward compatibility with 2.0
+		call_integration_hook('integrate_bbc_buttons', array(&$context['bbc_tags']));
 
 		// Show the toggle?
 		if (empty($modSettings['disable_wysiwyg']))
@@ -1799,7 +1820,7 @@ function create_control_richedit($editorOptions)
 				$context['disabled_tags']['orderedlist'] = true;
 			}
 
-			foreach ($editor_tag_map as $thisTag => $tagNameBBC)
+			foreach ($disabled_editor_tags as $thisTag => $tagNameBBC)
 				if ($tag === $thisTag)
 					$context['disabled_tags'][$tagNameBBC] = true;
 
@@ -1872,7 +1893,7 @@ function create_control_richedit($editorOptions)
 		}
 		if (!empty($bbcodes_styles))
 			$context['html_headers'] .= '
-		<style>' . $bbcodes_styles . '
+		<style type="text/css">' . $bbcodes_styles . '
 		</style>';
 	}
 
@@ -2015,9 +2036,8 @@ function create_control_richedit($editorOptions)
 
 /**
  * Create a anti-bot verification control?
- * @param array &$verificationOptions Options for the verification control
- * @param bool $do_test Whether to check to see if the user entered the code correctly
- * @return bool|array False if there's nothing to show, true if everything went well or an array containing error indicators if the test failed
+ * @param array &$verificationOptions
+ * @param bool $do_test = false
  */
 function create_control_verification(&$verificationOptions, $do_test = false)
 {
@@ -2059,11 +2079,11 @@ function create_control_verification(&$verificationOptions, $do_test = false)
 	$thisVerification = &$context['controls']['verification'][$verificationOptions['id']];
 
 	// Add javascript for the object.
-	if ($context['controls']['verification'][$verificationOptions['id']]['show_visual'])
+	if ($context['controls']['verification'][$verificationOptions['id']]['show_visual'] && !WIRELESS)
 		$context['insert_after_template'] .= '
-			<script>
+			<script><!-- // --><![CDATA[
 				var verification' . $verificationOptions['id'] . 'Handle = new smfCaptcha("' . $thisVerification['image_href'] . '", "' . $verificationOptions['id'] . '", ' . ($context['use_graphic_library'] ? 1 : 0) . ');
-			</script>';
+			// ]]></script>';
 
 	// Is there actually going to be anything?
 	if (empty($thisVerification['show_visual']) && empty($thisVerification['number_questions']))
@@ -2247,7 +2267,7 @@ function create_control_verification(&$verificationOptions, $do_test = false)
 	{
 		if (!isset($context['html_headers']))
 			$context['html_headers'] = '';
-		$context['html_headers'] .= '<style>.vv_special { display:none; }</style>';
+		$context['html_headers'] .= '<style type="text/css">.vv_special { display:none; }</style>';
 	}
 
 	// Have we got some questions to load?
@@ -2284,8 +2304,7 @@ function create_control_verification(&$verificationOptions, $do_test = false)
 
 /**
  * This keeps track of all registered handling functions for auto suggest functionality and passes execution to them.
- * @param bool $checkRegistered If set to something other than null, checks whether the callback function is registered
- * @return void|bool Returns whether the callback function is registered if $checkRegistered isn't null
+ * @param bool $checkRegistered = null
  */
 function AutoSuggestHandler($checkRegistered = null)
 {
@@ -2321,7 +2340,7 @@ function AutoSuggestHandler($checkRegistered = null)
 /**
  * Search for a member - by real_name or member_name by default.
  *
- * @return array An array of information for displaying the suggestions
+ * @return string
  */
 function AutoSuggest_Search_Member()
 {
@@ -2369,7 +2388,7 @@ function AutoSuggest_Search_Member()
 /**
  * Search for a membergroup by name
  *
- * @return array An array of information for displaying the suggestions
+ * @return string
  */
 function AutoSuggest_Search_MemberGroups()
 {
@@ -2421,7 +2440,7 @@ function AutoSuggest_Search_MemberGroups()
 /**
  * Provides a list of possible SMF versions to use in emulation
  *
- * @return array An array of data for displaying the suggestions
+ * @return string
  */
 function AutoSuggest_Search_SMFVersions()
 {

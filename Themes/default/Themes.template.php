@@ -10,9 +10,7 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * The main sub template - for theme administration.
- */
+// The main sub template - for theme administration.
 function template_main()
 {
 	global $context, $settings, $scripturl, $txt, $modSettings;
@@ -61,10 +59,10 @@ function template_main()
 		echo '
 						</div>
 						<a href="javascript:void(0);" onclick="document.getElementById(\'known_themes_list\').style.display=\'block\'; document.getElementById(\'known_themes_link\').style.display = \'none\'; return false; " id="known_themes_link" style="display: none;">[ ', $txt['themeadmin_themelist_link'], ' ]</a>
-						<script>
+						<script><!-- // --><![CDATA[
 							document.getElementById("known_themes_list").style.display = "none";
 							document.getElementById("known_themes_link").style.display = "";
-						</script>
+						// ]]></script>
 					</dd>
 					<dt>
 						<label for="theme_guests">', $txt['theme_guests'], ':</label>
@@ -181,17 +179,14 @@ function template_main()
 	</div>';
 
 	echo '
-	<script>
+	<script><!-- // --><![CDATA[
 		window.smfForum_scripturl = smf_scripturl;
 		window.smfForum_sessionid = smf_session_id;
 		window.smfForum_sessionvar = smf_session_var;
 		window.smfThemes_writable = ', $context['can_create_new'] ? 'true' : 'false', ';
-	</script>';
+	// ]]></script>';
 }
 
-/**
- * This lists all themes
- */
 function template_list_themes()
 {
 	global $context, $scripturl, $txt;
@@ -290,9 +285,6 @@ function template_list_themes()
 	</div>';
 }
 
-/**
- * This lets you reset themes
- */
 function template_reset_list()
 {
 	global $context, $scripturl, $txt;
@@ -334,9 +326,6 @@ function template_reset_list()
 	</div>';
 }
 
-/**
- * This displays the form for setting theme options
- */
 function template_set_options()
 {
 	global $context, $scripturl, $txt;
@@ -452,9 +441,6 @@ function template_set_options()
 	</div>';
 }
 
-/**
- * The page for setting and managing theme settings.
- */
 function template_set_settings()
 {
 	global $context, $settings, $scripturl, $txt;
@@ -620,23 +606,6 @@ function template_set_settings()
 						</select>
 					</dd>';
 		}
-		// A Textarea?
-        	elseif ($setting['type'] == 'textarea')
-		{
-			echo '
-					<dt>
-						<label for="', $setting['id'], '">', $setting['label'], '</label>:';
-			
-			if (isset($setting['description']))
-				echo '<br>
-						<span class="smalltext">', $setting['description'], '</span>';	
-			echo '
-					</dt>
-					<dd>
-						<textarea rows="4" style="width: 95%;" cols="40" name="', !empty($setting['default']) ? 'default_' : '','options[', $setting['id'], ']" id="', $setting['id'], '">', $setting['value'], '</textarea>';
-                echo '
-                			</dd>';
-		}
 		// A regular input box, then?
 		else
 		{
@@ -684,7 +653,7 @@ function template_set_settings()
 	if (!empty($context['theme_variants']))
 	{
 		echo '
-		<script>
+		<script><!-- // --><![CDATA[
 		var oThumbnails = {';
 
 		// All the variant thumbnails.
@@ -698,13 +667,11 @@ function template_set_settings()
 
 		echo '
 		}
-		</script>';
+		// ]]></script>';
 	}
 }
 
-/**
- * This template allows for the selection of different themes ;).
- */
+// This template allows for the selection of different themes ;).
 function template_pick()
 {
 	global $context, $scripturl, $txt;
@@ -765,7 +732,7 @@ function template_pick()
 		if (!empty($theme['variants']))
 		{
 			echo '
-			<script>
+			<script><!-- // --><![CDATA[
 			var sBaseUseUrl', $theme['id'], ' = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';th=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';
 			var sBasePreviewUrl', $theme['id'], ' = smf_prepareScriptUrl(smf_scripturl) + \'action=theme;sa=pick;u=', $context['current_member'], ';theme=', $theme['id'], ';', $context['session_var'], '=', $context['session_id'], '\';
 			var oThumbnails', $theme['id'], ' = {';
@@ -789,7 +756,7 @@ function template_pick()
 				document.getElementById(\'theme_thumb_preview_', $theme['id'], '\').href = sBasePreviewUrl', $theme['id'], ' + \';vrt=\' + sVariant + \';variant=\' + sVariant;
 				document.getElementById(\'theme_preview_', $theme['id'], '\').href = sBasePreviewUrl', $theme['id'], ' + \';vrt=\' + sVariant + \';variant=\' + sVariant;
 			}
-			</script>';
+			// ]]></script>';
 		}
 	}
 
@@ -798,9 +765,7 @@ function template_pick()
 	</div>';
 }
 
-/**
- * Okay, that theme was installed/updated successfully!
- */
+// Okay, that theme was installed/updated successfully!
 function template_installed()
 {
 	global $context, $scripturl, $txt;
@@ -835,9 +800,6 @@ function template_installed()
 	</div>';
 }
 
-/**
- * The page for editing themes.
- */
 function template_edit_list()
 {
 	global $context, $scripturl, $txt;
@@ -871,9 +833,6 @@ function template_edit_list()
 	</div>';
 }
 
-/**
- * The page allowing you to copy a template from one theme to another.
- */
 function template_copy_template()
 {
 	global $context, $scripturl, $txt;
@@ -912,9 +871,6 @@ function template_copy_template()
 	</div>';
 }
 
-/**
- * This lets you browse a list of files in a theme so you can choose which one to edit.
- */
 function template_edit_browse()
 {
 	global $context, $txt;
@@ -950,7 +906,7 @@ function template_edit_browse()
 			echo '<a href="', $file['href'], '"', $file['is_template'] ? ' style="font-weight: bold;"' : '', '>', $file['filename'], '</a>';
 
 		elseif ($file['is_directory'])
-			echo '<a href="', $file['href'], '" class="is_directory"><span class="generic_icons folder"></span>', $file['filename'], '</a>';
+			echo '<a href="', $file['href'], '" class="is_directory">', $file['filename'], '</a>';
 
 		else
 			echo $file['filename'];
@@ -968,9 +924,7 @@ function template_edit_browse()
 	</div>';
 }
 
-/**
- * Wanna edit the stylesheet?
- */
+// Wanna edit the stylesheet?
 function template_edit_style()
 {
 	global $context, $settings, $scripturl, $txt;
@@ -984,7 +938,7 @@ function template_edit_style()
 	// From now on no one can complain that editing css is difficult. If you disagree, go to www.w3schools.com.
 	echo '
 	<div id="admincenter">
-		<script>
+		<script><!-- // --><![CDATA[
 			var previewData = "";
 			var previewTimeout;
 			var editFilename = ', JavaScriptEscape($context['edit_filename']), ';
@@ -1093,7 +1047,7 @@ function template_edit_style()
 					};
 				}
 			}
-		</script>
+		// ]]></script>
 		<iframe id="css_preview_box" name="css_preview_box" src="about:blank" width="99%" height="300" frameborder="0" style="display: none; margin-bottom: 2ex; border: 1px solid black;"></iframe>';
 
 	// Just show a big box.... gray out the Save button if it's not saveable... (ie. not 777.)
@@ -1128,9 +1082,7 @@ function template_edit_style()
 	</div>';
 }
 
-/**
- * This edits the template...
- */
+// This edits the template...
 function template_edit_template()
 {
 	global $context, $scripturl, $txt;
@@ -1186,9 +1138,6 @@ function template_edit_template()
 	</div>';
 }
 
-/**
- * This allows you to edit a file
- */
 function template_edit_file()
 {
 	global $context, $scripturl, $txt;

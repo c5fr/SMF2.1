@@ -1018,7 +1018,6 @@ function PackageInstall()
 				$credits_tag = array(
 					'url' => $action['url'],
 					'license' => $action['license'],
-					'licenseurl' => $action['licenseurl'],
 					'copyright' => $action['copyright'],
 					'title' => $action['title'],
 				);
@@ -1026,9 +1025,9 @@ function PackageInstall()
 			elseif ($action['type'] == 'hook' && isset($action['hook'], $action['function']))
 			{
 				if ($action['reverse'])
-					remove_integration_function($action['hook'], $action['function'], true, $action['include_file'], $action['object']);
+					remove_integration_function($action['hook'], $action['function'], $action['include_file']);
 				else
-					add_integration_function($action['hook'], $action['function'], true, $action['include_file'], $action['object']);
+					add_integration_function($action['hook'], $action['function'], $action['include_file']);
 			}
 			// Only do the database changes on uninstall if requested.
 			elseif ($action['type'] == 'database' && !empty($action['filename']) && (!$context['uninstalling'] || !empty($_POST['do_db_changes'])))
@@ -1048,7 +1047,7 @@ function PackageInstall()
 			elseif ($action['type'] == 'redirect' && !empty($action['redirect_url']))
 			{
 				$context['redirect_url'] = $action['redirect_url'];
-				$context['redirect_text'] = !empty($action['filename']) && file_exists($packagesdir . '/temp/' . $context['base_path'] . $action['filename']) ? $smcFunc['htmlspecialchars'](file_get_contents($packagesdir . '/temp/' . $context['base_path'] . $action['filename'])) : ($context['uninstalling'] ? $txt['package_uninstall_done'] : $txt['package_installed_done']);
+				$context['redirect_text'] = !empty($action['filename']) && file_exists($packagesdir . '/temp/' . $context['base_path'] . $action['filename']) ? file_get_contents($packagesdir . '/temp/' . $context['base_path'] . $action['filename']) : ($context['uninstalling'] ? $txt['package_uninstall_done'] : $txt['package_installed_done']);
 				$context['redirect_timeout'] = $action['redirect_timeout'];
 
 				// Parse out a couple of common urls.
@@ -1498,10 +1497,8 @@ function PackageBrowse()
 	$data = $smcFunc['db_fetch_assoc']($get_versions);
 	$smcFunc['db_free_result']($get_versions);
 
-	// Decode the data.
-	$items = json_decode($data['data']);
-
-	$context['emulation_versions'] = preg_replace('~^SMF ~', '', $items);
+	// Which versions are "safe" for emulating? Strip "SMF" off the list as well...
+	$context['emulation_versions'] = preg_replace('~^SMF ~', '', explode("\r\n", $data['data']));
 
 	// Current SMF version, which is selected by default
 	$context['default_version'] = preg_replace('~^SMF ~', '', $forum_version);
@@ -1515,11 +1512,11 @@ function PackageBrowse()
  * Determines if the package is a mod, avatar, language package
  * Determines if the package has been installed or not
  *
- * @param int $start The item to start with (not used here)
- * @param int $items_per_page The number of items to show per page (not used here)
- * @param string $sort A string indicating how to sort the results
- * @param string? $params A key for the $packages array
- * @return array An array of information about the packages
+ * @param type $start
+ * @param type $items_per_page
+ * @param type $sort
+ * @param type $params
+ * @return type
  */
 function list_getPackages($start, $items_per_page, $sort, $params)
 {
@@ -2237,9 +2234,10 @@ function PackagePermissions()
 /**
  * Checkes the permissions of all the areas that will be affected by the package
  *
- * @param string $path The path to the directiory to check permissions for
- * @param array $data An array of data about the directory
- * @param int $level How far deep to go
+ * @param type $path
+ * @param type $data
+ * @param type $level
+ * @return type
  */
 function fetchPerms__recursive($path, &$data, $level)
 {

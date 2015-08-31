@@ -13,14 +13,8 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * Class MsgReport_Notify_Background
- */
 class MsgReport_Notify_Background extends SMF_BackgroundTask
 {
-	/**
-	 * @return bool
-	 */
 	public function execute()
 	{
 		global $smcFunc, $sourcedir, $modSettings, $language, $scripturl;

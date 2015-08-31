@@ -10,9 +10,6 @@
  * @version 2.1 Beta 2
  */
 
-/**
- * The main notification bar.
- */
 function template_main()
 {
 	global $context, $txt, $scripturl;
@@ -31,9 +28,6 @@ function template_main()
 		</div>';
 }
 
-/**
- * Board notification bar.
- */
 function template_notify_board()
 {
 	global $context, $txt, $scripturl;

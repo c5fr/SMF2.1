@@ -20,8 +20,8 @@ if (!defined('SMF'))
 /**
  * Mark a board or multiple boards read.
  *
- * @param int|array $boards The ID of a single board or an array of boards
- * @param bool $unread Whether we're marking them as unread
+ * @param array $boards
+ * @param bool $unread
  */
 function markBoardsRead($boards, $unread = false)
 {
@@ -414,8 +414,8 @@ function MarkRead()
 
 /**
  * Get the id_member associated with the specified message.
- * @param int $messageID The ID of the message
- * @return int The ID of the member associated with that post
+ * @param int $messageID
+ * @return int the member id
  */
 function getMsgMemberID($messageID)
 {
@@ -446,8 +446,8 @@ function getMsgMemberID($messageID)
  * Modify the settings and position of a board.
  * Used by ManageBoards.php to change the settings of a board.
  *
- * @param int $board_id The ID of the board
- * @param array &$boardOptions An array of options related to the board
+ * @param int $board_id
+ * @param array &$boardOptions
  */
 function modifyBoard($board_id, &$boardOptions)
 {
@@ -805,8 +805,8 @@ function modifyBoard($board_id, &$boardOptions)
  * With the option inherit_permissions set, the parent board permissions
  * will be inherited.
  *
- * @param array $boardOptions An array of information for the new board
- * @return int The ID of the new board
+ * @param array $boardOptions
+ * @return int The new board id
  */
 function createBoard($boardOptions)
 {
@@ -907,8 +907,8 @@ function createBoard($boardOptions)
  *   - all information that's associated with the given boards;
  * updates the statistics to reflect the new situation.
  *
- * @param array $boards_to_remove The boards to remove
- * @param int $moveChildrenTo The ID of the board to move the child boards to (null to remove the child boards, 0 to make them a top-level board)
+ * @param array $boards_to_remove
+ * @param array $moveChildrenTo = null
  */
 function deleteBoards($boards_to_remove, $moveChildrenTo = null)
 {
@@ -1087,9 +1087,9 @@ function reorderBoards()
  * Fixes the children of a board by setting their child_levels to new values.
  * Used when a board is deleted or moved, to affect its children.
  *
- * @param int $parent The ID of the parent board
- * @param int $newLevel The new child level for each of the child boards
- * @param int $newParent The ID of the new parent board
+ * @param int $parent
+ * @param int $newLevel
+ * @param int $newParent
  */
 function fixChildren($parent, $newLevel, $newParent)
 {
@@ -1130,7 +1130,7 @@ function fixChildren($parent, $newLevel, $newParent)
  * Tries to load up the entire board order and category very very quickly
  * Returns an array with two elements, cats and boards
  *
- * @return array An array of categories and boards
+ * @return array
  */
 function getTreeOrder()
 {
@@ -1172,7 +1172,8 @@ function getTreeOrder()
 /**
  * Takes a board array and sorts it
  *
- * @param array &$boards The boards
+ * @param array &$boards
+ * @return void
  */
 function sortBoards(array &$boards)
 {
@@ -1197,7 +1198,8 @@ function sortBoards(array &$boards)
 /**
  * Takes a category array and sorts it
  *
- * @param array &$categories The categories
+ * @param array &$categories
+ * @return void
  */
 function sortCategories(array &$categories)
 {
@@ -1216,10 +1218,10 @@ function sortCategories(array &$categories)
 }
 
 /**
- * Returns the given board's moderators, with their names and links
+ * Returns the given board's moderators, with their names and link
  *
- * @param array $boards The boards to get moderators of
- * @return array An array containing information about the moderators of each board
+ * @param array $boards
+ * @return array
  */
 function getBoardModerators(array $boards)
 {
@@ -1258,8 +1260,8 @@ function getBoardModerators(array $boards)
 /**
  * Returns board's moderator groups with their names and link
  *
- * @param array $boards The boards to get moderator groups of
- * @return array An array containing information about the groups assigned to moderate each board
+ * @param array $boards
+ * @return array
  */
 function getBoardModeratorGroups(array $boards)
 {
@@ -1418,8 +1420,8 @@ function getBoardTree()
  * Recursively get a list of boards.
  * Used by getBoardTree
  *
- * @param array &$_boardList The board list
- * @param array &$_tree The board tree
+ * @param array &$_boardList
+ * @param array &$_tree
  */
 function recursiveBoards(&$_boardList, &$_tree)
 {
@@ -1435,9 +1437,9 @@ function recursiveBoards(&$_boardList, &$_tree)
 
 /**
  * Returns whether the child board id is actually a child of the parent (recursive).
- * @param int $child The ID of the child board
- * @param int $parent The ID of a parent board
- * @return boolean Whether the specified child board is actually a child of the specified parent board.
+ * @param int $child
+ * @param int $parent
+ * @return boolean
  */
 function isChildOf($child, $parent)
 {

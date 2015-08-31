@@ -287,8 +287,7 @@ function SetReserved()
  * Accessed by ?action=admin;area=regcenter;sa=settings.
  * Requires the admin_forum permission.
  *
- * @param bool $return_config Whether or not to return the config_vars array (used for admin search)
- * @return void|array Returns nothing or returns the $config_vars array if $return_config is true
+ * @param bool $return_config = false
  */
 function ModifyRegistrationSettings($return_config = false)
 {

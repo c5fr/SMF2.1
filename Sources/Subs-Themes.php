@@ -522,9 +522,9 @@ function remove_theme($themeID)
 /**
  * Generates a file listing for a given directory
  *
- * @param string $path The full path to the directory
- * @param string $relative The relative path (relative to the Themes directory)
- * @return array An array of information about the files and directories found
+ * @param type $path
+ * @param type $relative
+ * @return type
  */
 function get_file_listing($path, $relative)
 {

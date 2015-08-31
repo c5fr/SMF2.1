@@ -1,16 +1,16 @@
 <?php
-$sg = 'PCLI';
+
 /**
  * The settings file contains all of the basic settings that need to be present when a database/cache is not available.
  *
  * Simple Machines Forum (SMF)
  *
- * @package   SMF
- * @author    Simple Machines http://www.simplemachines.org
+ * @package SMF
+ * @author Simple Machines http://www.simplemachines.org
  * @copyright 2015 Simple Machines and individual contributors
- * @license   http://www.simplemachines.org/about/smf/license.php BSD
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version   2.1 Beta 2
+ * @version 2.1 Beta 2
  */
 
 ########## Maintenance ##########
@@ -40,7 +40,7 @@ $mmessage = 'Okay faithful users...we\'re attempting to restore an older backup 
  * The name of your forum.
  * @var string
  */
-$mbname = 'Fc5fr';
+$mbname = 'TSMF';
 /**
  * The default language file set for the forum.
  * @var string
@@ -50,7 +50,7 @@ $language = 'french-utf8';
  * URL to your forum's folder. (without the trailing /!)
  * @var string
  */
-$boardurl = 'http://fc5fr';
+$boardurl = 'http://tsmf';
 /**
  * Email address to send emails from. (like noreply@yourdomain.com.)
  * @var string
@@ -60,7 +60,7 @@ $webmaster_email = 'Lio181@Yahoo.fr';
  * Name of the cookie to set for authentication.
  * @var string
  */
-$cookiename = 'SMFCookie529';
+$cookiename = 'SMFCookie459';
 
 ########## Database Info ##########
 /**
@@ -68,7 +68,7 @@ $cookiename = 'SMFCookie529';
  * Default options: mysql, postgresql
  * @var string
  */
-$db_type = 'mysql';
+$db_type = 'mysqli';
 /**
  * The server to connect to (or a Unix socket)
  * @var string
@@ -78,7 +78,7 @@ $db_server = 'localhost';
  * The database name
  * @var string
  */
-$db_name = 'wwwconcr_forum';
+$db_name = 'wwwconcr_tsmf';
 /**
  * Database username
  * @var string
@@ -123,7 +123,7 @@ $db_error_send = 0;
  * (you can add more with a mod).
  * @var string
  */
-$cache_accelerator = 'smf';
+$cache_accelerator = '';
 /**
  * The level at which you would like to cache. Between 0 (off) through 3 (cache a lot).
  * @var int
@@ -139,7 +139,7 @@ $cache_memcached = '';
  * It is also recommended that you place this in /tmp/ if you are going to use this.
  * @var string
  */
-$cachedir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\forum_concrete5_fr/cache';
+$cachedir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\tsmf/cache';
 
 ########## Image Proxy ##########
 # This is done entirely in Settings.php to avoid loading the DB while serving the images
@@ -153,7 +153,7 @@ $image_proxy_enabled = '';
  * Secret key to be used by the proxy
  * @var string
  */
-$image_proxy_secret = 'f851ff6b085f5aedd65a';
+$image_proxy_secret = 'ae37d1eb253aad8f0899';
 
 /**
  * Maximum file size (in KB) for indiviudal files
@@ -167,47 +167,43 @@ $image_proxy_maxsize = 5192;
  * The absolute path to the forum's folder. (not just '.'!)
  * @var string
  */
-$boarddir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\forum_concrete5_fr';
+$boarddir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\tsmf';
 /**
  * Path to the Sources directory.
  * @var string
  */
-$sourcedir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\forum_concrete5_fr/Sources';
+$sourcedir = 'C:\\xampp\\htdocs\\w\\wwwconcr\\public_html\\tsmf/Sources';
 /**
  * Path to the Packages directory.
  * @var string
  */
-$packagesdir = dirname( __FILE__ ) . '/Packages';
+$packagesdir = dirname(__FILE__) . '/Packages';
 /**
  * Path to the tasks directory.
  * @var string
  */
-$tasksdir = $sourcedir . '/tasks';
+$tasksdir = $sourcedir .'/tasks';
 
 ########## Error-Catching ##########
 # Note: You shouldn't touch these settings.
-if ( file_exists( dirname( __FILE__ ) . '/db_last_error.php' ) ) {
-	include( dirname( __FILE__ ) . '/db_last_error.php' );
-}
+if (file_exists(dirname(__FILE__) . '/db_last_error.php'))
+	include(dirname(__FILE__) . '/db_last_error.php');
 
-if ( ! isset( $db_last_error ) ) {
+if (!isset($db_last_error))
+{
 	// File does not exist so lets try to create it
-	file_put_contents( dirname( __FILE__ ) . '/db_last_error.php',
-	                   '<' . '?' . "php\n" . '$db_last_error = 0;' . "\n" . '?' . '>' );
+	file_put_contents(dirname(__FILE__) . '/db_last_error.php', '<' . '?' . "php\n" . '$db_last_error = 0;' . "\n" . '?' . '>');
 	$db_last_error = 0;
 }
 
 
 # Make sure the paths are correct... at least try to fix them.
-if ( ! file_exists( $boarddir ) && file_exists( dirname( __FILE__ ) . '/agreement.txt' ) ) {
-	$boarddir = dirname( __FILE__ );
-}
-if ( ! file_exists( $sourcedir ) && file_exists( $boarddir . '/Sources' ) ) {
+if (!file_exists($boarddir) && file_exists(dirname(__FILE__) . '/agreement.txt'))
+	$boarddir = dirname(__FILE__);
+if (!file_exists($sourcedir) && file_exists($boarddir . '/Sources'))
 	$sourcedir = $boarddir . '/Sources';
-}
-if ( ! file_exists( $cachedir ) && file_exists( $boarddir . '/cache' ) ) {
+if (!file_exists($cachedir) && file_exists($boarddir . '/cache'))
 	$cachedir = $boarddir . '/cache';
-}
 
 $db_character_set = 'utf8';
 ?>

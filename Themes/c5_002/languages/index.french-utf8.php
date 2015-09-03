@@ -909,4 +909,12 @@ $txt['boardindex_total_posts'] = '%1$s Messages dans %2$s Sujets par %3$s Membre
 $txt['board_topics'] = 'Sujet';
 
 $txt['alerts'] = 'Alertes';
-?>
+
+
+$txt['user_active']= 'Membre actif dans les %1$d dernières minutes';
+
+$txt['sub_boards']='Sous-forums';
+$txt['view']='Vue';
+
+$txt['watching_this_topic']='Vous suivez ce sujet...';
+

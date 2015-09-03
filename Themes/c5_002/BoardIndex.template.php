@@ -277,8 +277,8 @@ function template_ic_block_recent() {
 				<p id="infocenter_onepost" class="inline">
 					<a href="', $scripturl, '?action=recent">', $txt['recent_view'], '</a>&nbsp;&quot;', sprintf(
 			$txt['is_recent_updated'],
-		                                                                                                    '&quot;' . $context['latest_post']['link'],
-		                                                                                                    '&quot;' ), '
+			'&quot;' . $context['latest_post']['link'],
+			'&quot;' ), '
 		                                                                                                     (', $context['latest_post']['time'], ')<br>
 				</p>';
 	} // Show lots of posts.
@@ -301,7 +301,7 @@ function template_ic_block_recent() {
 						<td class="recentpost"><strong>', $post['link'], '</strong></td>
 						<td class="recentposter">', $post['poster']['link'], '</td>
 						<td class="recentboard">', $post['board']['link'], '</td>
-						<td class="recenttime">', $post['time'], '</td>
+						<td class="recenttime">', ucfirst($post['time']), '</td>
 					</tr>';
 		}
 		echo '
@@ -401,13 +401,16 @@ function template_ic_block_online() {
 	// Handle hidden users and buddies.
 	$bracketList = [ ];
 	if ( $context['show_buddies'] ) {
-		$bracketList[] = comma_format( $context['num_buddies'] ) . ' ' . ( $context['num_buddies'] == 1 ? $txt['buddy'] : $txt['buddies'] );
+		$bracketList[] = comma_format( $context['num_buddies'] ) . ' ' . ( $context['num_buddies'] < 2 ? $txt['buddy']
+				: $txt['buddies'] );
 	}
 	if ( ! empty( $context['num_spiders'] ) ) {
-		$bracketList[] = comma_format( $context['num_spiders'] ) . ' ' . ( $context['num_spiders'] == 1 ? $txt['spider'] : $txt['spiders'] );
+		$bracketList[] = comma_format( $context['num_spiders'] ) . ' ' . ( $context['num_spiders'] < 2 ? $txt['spider'] :
+				$txt['spiders'] );
 	}
 	if ( ! empty( $context['num_users_hidden'] ) ) {
-		$bracketList[] = comma_format( $context['num_users_hidden'] ) . ' ' . ( $context['num_spiders'] == 1 ? $txt['hidden'] : $txt['hidden_s'] );
+		$bracketList[] = comma_format( $context['num_users_hidden'] ) . ' ' . ( $context['num_spiders'] < 2 ?
+				$txt['hidden'] : $txt['hidden_s'] );
 	}
 
 	if ( ! empty( $bracketList ) ) {
@@ -421,10 +424,9 @@ function template_ic_block_online() {
 
 	// Assuming there ARE users online... each user in users_online has an id, username, name, group, href, and link.
 	if ( ! empty( $context['users_online'] ) ) {
-		echo '
-				', sprintf( $txt['users_active'], $modSettings['lastActive'] ), ': ', implode( ', ',
-		                                                                                   $context['list_users_online'] );
-
+		echo sprintf( ( count( $context['users_online'] ) < 2 ? $txt['user_active'] : $txt['users_active'] ),
+			$modSettings['lastActive'] ), ': ', implode( ', ',
+		                                               $context['list_users_online'] );
 		// Showing membergroups?
 		if ( ! empty( $settings['show_group_key'] ) && ! empty( $context['membergroups'] ) ) {
 			echo '
@@ -435,5 +437,3 @@ function template_ic_block_online() {
 	echo '
 			</p>';
 }
-
-?>

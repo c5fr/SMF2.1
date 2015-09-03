@@ -147,7 +147,7 @@ $txt['last_post_message']      = 'Dernier message : ' . '%3$s' . '<span
 class="postby"><strong>%2$s</strong> par
 <strong>%1$s</strong></span> ';
 $txt['last_post_topic']        = '%1$s<br>Par <strong>%2$s</strong>';
-$txt['post_by_member']         = '<strong>%1$s</strong> by <strong>%2$s</strong><br>';
+$txt['post_by_member']         = '<strong>%1$s</strong> par <strong>%2$s</strong><br>';
 $txt['boardindex_total_posts'] = '%1$s Messages dans %2$s Sujets par %3$s Membres';
 $txt['show']                   = 'Afficher';
 $txt['hide']                   = 'Cacher';

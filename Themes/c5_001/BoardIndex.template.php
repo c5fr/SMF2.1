@@ -261,9 +261,11 @@ function template_ic_block_recent() {
 		// latest_post has link, href, time, subject, short_subject (shortened with...), and topic. (its id.)
 		echo '
 				<p id="infocenter_onepost" class="inline">
-					<a href="', $scripturl, '?action=recent">', $txt['recent_view'], '</a>&nbsp;&quot;', sprintf( $txt['is_recent_updated'],
+					<a href="', $scripturl, '?action=recent">', $txt['recent_view'], '</a>&nbsp;&quot;', sprintf(
+			$txt['is_recent_updated'],
 		                                                                                                    '&quot;' . $context['latest_post']['link'],
-		                                                                                                    '&quot;' ), ' (', $context['latest_post']['time'], ')<br>
+		                                                                                                    '&quot;' ), '
+		                                                                                                     (', $context['latest_post']['time'], ')<br>
 				</p>';
 	} // Show lots of posts.
 	elseif ( ! empty( $context['latest_posts'] ) ) {
@@ -374,7 +376,7 @@ function template_ic_block_online() {
 				</h4>
 			</div>
 			<p class="inline">
-				', $context['show_who'] ? '<a href="' . $scripturl . '?action=who">' : '', $txt['online'], ': <strong>', comma_format( $context['num_guests'] ), ' ', $txt['guest'], $context['num_guests'] < 2 ? '' : 's', '</strong> et <strong>', comma_format( $context['num_users_online'] ), ' ', strtolower($txt['user']), $context['num_users_online'] < 2 ? '' : 's', '</strong>';
+				', $context['show_who'] ? '<a href="' . $scripturl . '?action=who">' : '', $txt['online'], ': <strong>', comma_format( $context['num_guests'] ), ' ', $txt['guest'], $context['num_guests'] < 2 ? '' : 's', '</strong> et <strong>', comma_format( $context['num_users_online'] ), ' ', strtolower( $txt['user'] ), $context['num_users_online'] < 2 ? '' : 's', '</strong>';
 
 	// Handle hidden users and buddies.
 	$bracketList = [ ];

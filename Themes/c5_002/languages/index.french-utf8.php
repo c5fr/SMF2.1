@@ -863,29 +863,36 @@ $txt['debug_hooks']                     = 'Crochets appelés:';
 $txt['debug_instances']                 = 'Instances created: ';
 $txt['are_sure_mark_read']              = 'Are you sure you want to mark messages as read?';
 
-// Accessibility
-$txt['hide_category']   = 'Hide Category';
-$txt['show_category']   = 'Show Category';
-$txt['hide_infocenter'] = 'Hide Info Center';
-$txt['show_infocenter'] = 'Show Info Center';
 
-// Notification post control
-$txt['notify_topic_0']      = 'Not Following';
-$txt['notify_topic_1']      = 'No Alerts or Emails';
-$txt['notify_topic_2']      = 'Receive Alerts';
-$txt['notify_topic_3']      = 'Receive Emails and Alerts';
-$txt['notify_topic_0_desc'] = 'You will not receive any emails or alerts for this post and it will also not show up in your unread replies and topics list. You will still receive @mentions for this topic.';
-$txt['notify_topic_1_desc'] = 'You will not receive any emails or alerts but only @mentions by other members.';
-$txt['notify_topic_2_desc'] = 'You will receive alerts for this topic.';
-$txt['notify_topic_3_desc'] = 'You will receive both alerts and e-mails for this topic.';
-$txt['notify_board_1']      = 'No Alerts or Emails';
-$txt['notify_board_2']      = 'Receive Alerts';
-$txt['notify_board_3']      = 'Receive Emails and Alerts';
-$txt['notify_board_1_desc'] = 'You will not receive any emails or alerts for new topics';
-$txt['notify_board_2_desc'] = 'You will receive alerts for this board.';
-$txt['notify_board_3_desc'] = 'You will receive both alerts and e-mails for this board.';
+
 
 //Chgts c7
+
+
+// Accessibility
+$txt['hide_category']   = 'Cacher Categorie';
+$txt['show_category']   = 'Montrer Categorie';
+$txt['hide_infocenter'] = 'Cacher Info Center';
+$txt['show_infocenter'] = 'Montrer Info Center';
+
+// Notification post control
+$txt['notify_topic_0']      = 'Non suivi';
+$txt['notify_topic_1']      = 'Pas d\'alerte ni d\'emails';
+$txt['notify_topic_2']      = 'Recevoir les alertes';
+$txt['notify_topic_3']      = 'Recevoir les emails and alertes';
+$txt['notify_topic_0_desc'] = 'Vous ne recevrez ni emails or alertes pour ce sujet il n\'azpparaîtra pas non plus dans vos sujets et réponses non lues. Vous ne recevrez que les @mentions pour ce sujet.';
+$txt['notify_topic_1_desc'] = 'Vous ne recevrez ni emails or alertes mais seulement les @mentions d\'autres membres.';
+$txt['notify_topic_2_desc'] = 'Vous recevrez les alertes de ce sujet.';
+$txt['notify_topic_3_desc'] = 'Vous recevrez les alertes et les emails de ce sujet.';
+$txt['notify_board_1']      = 'Pas d\'alerte ni d\'emails';
+$txt['notify_board_2']      = 'Recevoir les Alertes';
+$txt['notify_board_3']      = 'Recevoir les emails et les alertes';
+$txt['notify_board_1_desc'] = 'Vous ne recevrez ni emails or alertes pour les nouveaux sujets.';
+$txt['notify_board_2_desc'] = 'Vous recevrez les alertes de ce forum.';
+$txt['notify_board_3_desc'] = 'Vous recevrez les alertes et les emails de ce forum.';
+
+$txt['terms_and_rules']='Règlement';
+
 $txt['posts'] = 'Message';
 
 

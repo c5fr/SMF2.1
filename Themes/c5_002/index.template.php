@@ -290,7 +290,7 @@ function template_body_above() {
 	echo '
 		</div>
 	</div>';
-
+	/*
 	echo '
 	<div id="header">
 		<div class="frame">
@@ -303,13 +303,15 @@ function template_body_above() {
 
 	echo '
 		</div>
-	</div>
+		</div>';
+	*/
+	echo '<div class="spacev"></div>
 	<div id="wrapper">
 		<div id="upper_section">
 			<div id="inner_section">
 				<div id="inner_wrap">
 					<div class="user">
-						', $context['current_time'], '
+						<a href="#botc7" title="Aller en bas" id="topc7">', ucfirst( $context['current_time'] ), '</a>
 					</div>';
 	// Show a random news item? (or you could pick one from news_lines...)
 	if ( ! empty( $settings['enable_news'] ) && ! empty( $context['random_news_line'] ) ) {
@@ -366,9 +368,9 @@ function template_body_below() {
 			</ul>';
 
 	// Show the load time?
+	echo '<p><a href="#topc7"><img src="../Smileys/default/upline.gif" id="botc7" title="Aller en haut"/></a> ';
 	if ( $context['show_load_time'] ) {
-		echo '
-			<p>', sprintf( $txt['page_created_full'], $context['load_time'], $context['load_queries'] ), '</p>';
+		echo sprintf( $txt['page_created_full'], $context['load_time'], $context['load_queries'] );
 	}
 
 	echo '
@@ -383,7 +385,28 @@ function template_body_below() {
 function template_html_below() {
 	// load in any javascipt that could be deferred to the end of the page
 	template_javascript( TRUE );
+	echo '
 
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setDomains", ["*.concrete5.fr"]]);
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u="//piwik.c57.fr/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", 3]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+    g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//piwik.c57.fr/piwik.php?idsite=3" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+
+';
 	echo '
 </body>
 </html>';

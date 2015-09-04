@@ -231,7 +231,7 @@ function template_main() {
 							<div class="icons">';
 			if ( $topic['is_watched'] ) {
 				echo '
-								<span class="generic_icons watch floatright" title="', $txt['watching_this_topic'], '">♫</span>';
+								<span class="generic_icons watch floatright" title="', $txt['watching_this_topic'], '"></span>';
 			}
 			if ( $topic['is_locked'] ) {
 				echo '

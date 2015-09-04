@@ -269,7 +269,7 @@ function template_main() {
 			$txt['views'], '</p></div>
 					<div class="lastpost">
 						<p>', sprintf( $txt['last_post_topic'],
-			                     '<a href="' . $topic['last_post']['href'] . '">' . $topic['last_post']['time'] . '</a>',
+			                     '<a href="' . $topic['last_post']['href'] . '">' . ucfirst($topic['last_post']['time']) . '</a>',
 			                     $topic['last_post']['member']['link'] ), '</p>
 					</div>';
 
